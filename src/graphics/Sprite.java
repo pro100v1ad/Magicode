@@ -4,7 +4,9 @@ import utils.Utils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
+/*
+Хз для чего, потом удалю мб
+ */
 public class Sprite {
 
     private SpriteSheet sheet;

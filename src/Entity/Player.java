@@ -13,7 +13,9 @@ import java.io.File;
 import java.net.SocketTimeoutException;
 
 import static utils.ResourceLoader.loadImage;
-
+/*
+Класс для создания игрока
+ */
 public class Player extends Entity{ // Класс игрока
     // Для доступа к главной панели
     GamePanel gp;
@@ -68,7 +70,7 @@ public class Player extends Entity{ // Класс игрока
         speed = 4;
     }
 
-    public void update() { // Обрабатывает логику игрока
+    public void update() { // Обрабатывает логику игрока.
         // Определяет направление движения
         if(GamePanel.keys[0]) {
             direction = "up";
@@ -87,6 +89,7 @@ public class Player extends Entity{ // Класс игрока
         collisionOn = false;
         gp.cChecker.checkTile(this);
         if(!collisionOn) { // Меняет положение игрока
+
             if(GamePanel.keys[0]) {
                 worldY -= speed;
             }
@@ -100,6 +103,7 @@ public class Player extends Entity{ // Класс игрока
                 worldX += speed;
             }
         }
+
         // Логика анимации
         spriteCount++;
         if(spriteCount > 20) {

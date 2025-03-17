@@ -1,7 +1,10 @@
 package graphics;
 
 import java.awt.image.BufferedImage;
-
+/*
+Полезный класс, помогает вырезать спрайты из одного изображения
+Но нужно настроить, сейчас работает криво
+ */
 public class SpriteSheet {
 
     private BufferedImage sheet;

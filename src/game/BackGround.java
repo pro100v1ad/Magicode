@@ -11,14 +11,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import static utils.ResourceLoader.loadImage;
-
+/*
+Класс для создания заднего фона игры
+ */
 public class BackGround {
-
+    // Для работы с графикой
     private BufferedImage imageMap;
     public Tiles[] tiles;
     private int scaleX, scaleY;
+    //Доступ к главной панели
     GamePanel gp;
     public BackGround(GamePanel gp) {
+        // Загрузка изображений
         imageMap = loadImage("tileset_texture.png");
         SpriteSheet spriteSheet = new SpriteSheet(imageMap, 17, 16);
         tiles = new Tiles[221];
@@ -30,10 +34,11 @@ public class BackGround {
             if(i == 5) tiles[i].collision = true;
         }
         loadMap("/maps/map01.txt");
+        //Доступ к главной панели
         this.gp = gp;
     }
 
-    public void loadMap(String path) {
+    public void loadMap(String path) { // загружает мир из файла
         try {
             InputStream is = getClass().getResourceAsStream(path);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -67,7 +72,7 @@ public class BackGround {
 
     }
 
-    public void draw(Graphics2D g) {
+    public void draw(Graphics2D g) { // Рисует мир
 
         int worldCol = 0;
         int worldRow = 0;
@@ -87,9 +92,6 @@ public class BackGround {
                 worldY - GamePanel.tileSize*4 < gp.player.worldY + gp.player.screenY)
             {
                 try {
-//                    if(GamePanel.worldMap[i][j] == 1) {
-//                        g.drawImage(tiles[10], j*GamePanel.tileSize, i*GamePanel.tileSize, GamePanel.tileSize, GamePanel.tileSize, null);
-//                    }
                     g.drawImage(tiles[tileNum].image, screenX, screenY, GamePanel.tileSize, GamePanel.tileSize, null);
 
                 } catch (Exception e) {

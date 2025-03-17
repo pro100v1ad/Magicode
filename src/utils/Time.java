@@ -1,5 +1,7 @@
 package utils;
-
+/*
+Чисто вспомогательный класс для FPS и UPS
+ */
 public class Time {
 
     public static final long SECOND = 1000000000l;

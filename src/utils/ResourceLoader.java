@@ -4,7 +4,9 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+/*
+Для загрузки изображений
+ */
 public class ResourceLoader {
 
     public static final String PATH = "res/";

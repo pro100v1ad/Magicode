@@ -4,7 +4,9 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+Класс нужный, без него работать не будет игра, в подробности не вдавайся
+ */
 public class Utils {
 
     public static BufferedImage resize(BufferedImage image, int width, int height) {

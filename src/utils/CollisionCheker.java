@@ -2,7 +2,9 @@ package utils;
 
 import Entity.Entity;
 import display.GamePanel;
-
+/*
+Херня непонятная, скоро поменяю
+ */
 public class CollisionCheker {
     GamePanel gp;
     public CollisionCheker(GamePanel gp) {

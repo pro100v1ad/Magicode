@@ -3,7 +3,9 @@ package utils;
 import display.GamePanel;
 
 import java.awt.event.*;
-
+/*
+Класс для считывания нажатий мышки и клавиатуры
+ */
 public class Listeners implements MouseListener, MouseMotionListener, KeyListener {
 
     @Override
