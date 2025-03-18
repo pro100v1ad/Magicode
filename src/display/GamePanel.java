@@ -3,14 +3,14 @@ package display;
 import Entity.Player;
 import game.BackGround;
 import main.Main;
-import utils.CollisionCheker;
 import utils.Listeners;
 import utils.Time;
+import utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+
 /*
 В этом классе происходят все моменты
  */
@@ -21,14 +21,15 @@ public class GamePanel extends JComponent implements Runnable {
     public static boolean running; // Отвечает за то, что запущена игра или нет
 
     public static boolean[] keys = new boolean[256]; // Содержит список состояния нажатия всех необходимых клавиш
+    public static int scroll = 0;
 
 
     public static final int MAS_HEIGHT = 45;
     public static final int MAS_WIDTH = 72;
 
     public static final int originalTileSize = 16;
-    public static final int scale = 1;
-    public static final int tileSize = originalTileSize*scale;
+    public static double scale = 1;
+    public static int tileSize = (int)(originalTileSize*scale);
     public static int WIDTH = MAS_WIDTH*originalTileSize;
     public static int HEIGHT = MAS_HEIGHT*originalTileSize;
 
@@ -52,7 +53,6 @@ public class GamePanel extends JComponent implements Runnable {
 // Конец объявления классов необходимых для работы игры
 
 // Объявление классов Необходимых в процессе разработки
-    public CollisionCheker cChecker = new CollisionCheker(this);
     public BackGround backGround = new BackGround(this);
     public Player player = new Player(this, backGround);
 // Конец объявления классов Необходимых в процессе разработки
@@ -63,17 +63,13 @@ public class GamePanel extends JComponent implements Runnable {
 //        WIDTH = (int)dimension.getWidth()*3/4;
 //        HEIGHT = (int)dimension.getHeight()*3/4;
 
-//        for(int i = 0; i < GamePanel.MAS_HEIGHT; i++) {
-//            for(int j = 0; j < GamePanel.MAS_WIDTH; j++) {
-//                GamePanel.worldMap[i][j] = 1;
-//            }
-//        }
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT)); // устанавливает размеры окна приложения
         setFocusable(true); // ??
         requestFocus(); // ??
 
-        addKeyListener(new Listeners()); // Добавляет возможность считывать клавиши
+        addKeyListener(new Listeners(this)); // Добавляет возможность считывать клавиши
+//        addMouseWheelListener(new Listeners(this)); // Добавляет возможность считывать колесико мыши
     }
 
     @Override
@@ -134,6 +130,7 @@ public class GamePanel extends JComponent implements Runnable {
 
     }
 
+
     public void start() { // Вспомогательная функция для запуска потока
 
         if(running) return;
@@ -143,6 +140,8 @@ public class GamePanel extends JComponent implements Runnable {
     }
 
     public void update() { // Функция, которая вызывается 100 раз в секунду, в ней обновляется вся логика
+//        System.out.println(scroll);
+//        Utils.scaleUpdate(this);
         player.update();
     }
 

@@ -1,13 +1,17 @@
 package utils;
 
+import Entity.Player;
 import display.GamePanel;
 
 import java.awt.event.*;
 /*
 Класс для считывания нажатий мышки и клавиатуры
  */
-public class Listeners implements MouseListener, MouseMotionListener, KeyListener {
-
+public class Listeners implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener {
+    GamePanel gp;
+    public Listeners(GamePanel gp) {
+        this.gp = gp;
+    }
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -92,5 +96,31 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
             GamePanel.keys[4] = false;
         }
 
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) { // Считывание колесика мыши
+//        // Обработка прокрутки колесика мыши
+//        int notches = e.getWheelRotation();
+//        if (notches < 0) {
+//            if(GamePanel.scale < 1.5) {
+//                GamePanel.scale += 0.01;
+//                gp.player.worldX += 0.1;
+//                gp.player.worldY += 0.1;
+//            }
+////            System.out.println(GamePanel.scale);
+//            GamePanel.scroll = 2;
+//
+//            // Здесь можно добавить логику для обработки прокрутки вверх
+//        } else {
+//            if(GamePanel.scale > 0.75) {
+//                GamePanel.scale -= 0.01;
+//                gp.player.worldX -= 1;
+//                gp.player.worldY -= 1;
+//            }
+////            System.out.println(GamePanel.scale);
+//            GamePanel.scroll = 2;
+//            // Здесь можно добавить логику для обработки прокрутки вниз
+//        }
     }
 }

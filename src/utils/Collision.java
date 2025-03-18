@@ -12,13 +12,14 @@ public class Collision {
     int[][] CollisionMap;
     int MapX, MapY;
 
-    public Collision(int MapX, int MapY) {
+    public Collision() {
+
+    }
+
+    public void resetCollisionMap(int MapX, int MapY) { // Очищает карту препятствий от всех препятствий и игрока
         CollisionMap = new int[MapY][MapX];
         this.MapX = MapX;
         this.MapY = MapY;
-    }
-
-    public void resetCollisionMap() { // Очищает карту препятствий от всех препятствий и игрока
         for(int i = 0; i < MapY; i++) {
             for(int j = 0; j < MapX; j++) {
                 CollisionMap[i][j] = 0;
@@ -42,7 +43,7 @@ public class Collision {
                 try {
                     CollisionMap[i][j] = 1;
                 }catch (Exception e) {
-                    System.out.println("loadCollisionMapFromTiles ERROR");
+                    System.out.println("loadCollisionMapFromTiles ERROR" + i + " and  " + j + " !");
                 }
 
             }
