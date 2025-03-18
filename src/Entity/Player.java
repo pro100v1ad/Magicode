@@ -3,8 +3,10 @@ package Entity;
 
 
 import display.GamePanel;
+import game.BackGround;
 import graphics.Sprite;
 import graphics.SpriteSheet;
+import utils.Collision;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -33,7 +35,10 @@ public class Player extends Entity{ // Класс игрока
     public final int screenY;
     public String direction;
 
-    public Player(GamePanel gp){
+    private Collision collision;
+    private BackGround bg;
+
+    public Player(GamePanel gp, BackGround bg){
         // Загрузка спрайтов
         imageMap = loadImage("playerSkin.png");
         scaleX = 1;
@@ -62,6 +67,8 @@ public class Player extends Entity{ // Класс игрока
         solidArea.height = 32;
         // Для доступа к главной панели
         this.gp = gp;
+
+        collision = new Collision(GamePanel.maxWorldCol*GamePanel.tileSize, GamePanel.maxWorldRow*GamePanel.tileSize);
     }
 
     public void setDefaultValues() {
@@ -71,39 +78,97 @@ public class Player extends Entity{ // Класс игрока
     }
 
     public void update() { // Обрабатывает логику игрока.
-        // Определяет направление движения
-        if(GamePanel.keys[0]) {
+        // Определяет направление движения все 8
+        if (GamePanel.keys[0] && GamePanel.keys[3]) {
+            direction = "up_right";
+        } else if (GamePanel.keys[0] && GamePanel.keys[1]) {
+            direction = "up_left";
+        } else if (GamePanel.keys[2] && GamePanel.keys[1]) {
+            direction = "down_left";
+        } else if (GamePanel.keys[2] && GamePanel.keys[3]) {
+            direction = "down_right";
+        } else if(GamePanel.keys[0]) {
             direction = "up";
-        }
-        else if(GamePanel.keys[1]) {
+        } else if(GamePanel.keys[1]) {
             direction = "left";
-        }
-        else if(GamePanel.keys[2]) {
+        } else if(GamePanel.keys[2]) {
             direction = "down";
-        }
-        else if(GamePanel.keys[3]) {
+        } else if(GamePanel.keys[3]) {
             direction = "right";
-        }
+        } else direction = "null";
 
         //Проверка коллизии
-        collisionOn = false;
-        gp.cChecker.checkTile(this);
-        if(!collisionOn) { // Меняет положение игрока
-
-            if(GamePanel.keys[0]) {
-                worldY -= speed;
-            }
-            else if(GamePanel.keys[1]) {
-                worldX -= speed;
-            }
-            else if(GamePanel.keys[2]) {
-                worldY += speed;
-            }
-            else if(GamePanel.keys[3]) {
-                worldX += speed;
+        collision.resetCollisionMap();
+        collision.loadCollisionMapFromPlayerPosition((int)worldX, (int)worldY+GamePanel.tileSize/2, GamePanel.tileSize*2, GamePanel.tileSize*4);
+        for(int i = 0; i < GamePanel.maxWorldRow; i++) {
+            for(int j = 0; j < GamePanel.maxWorldCol; j++) {
+                if(GamePanel.worldMap[i][j] == 5) {
+                    collision.loadCollisionMapFromTiles(i, j, GamePanel.tileSize);
+                }
             }
         }
-
+        if(direction.equals("up_right")) {
+            for(int i = 0; i < speed; i++) {// Обработка движения вверх
+                if(!collision.detectCollision("up", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if(worldY > - 0) worldY -= 1;
+                }
+                if(!collision.detectCollision("right", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if (worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
+                }
+            }
+        }
+        else if (direction.equals("up_left")) {
+            for(int i = 0; i < speed; i++) {// Обработка движения вверх
+                if(!collision.detectCollision("up", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if(worldY > - 0) worldY -= 1;
+                }
+                if(!collision.detectCollision("left", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if(worldX > 1) worldX -= 1;
+                }
+            }
+        }
+        else if (direction.equals("down_left")) {
+            for(int i = 0; i < speed; i++) {// Обработка движения вверх
+                if(!collision.detectCollision("down", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if(worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
+                }
+                if(!collision.detectCollision("left", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if(worldX > 1) worldX -= 1;
+                }
+            }
+        }
+        else if (direction.equals("down_right")) {
+            for(int i = 0; i < speed; i++) {// Обработка движения вверх
+                if(!collision.detectCollision("down", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if(worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
+                }
+                if(!collision.detectCollision("right", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if(worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
+                }
+            }
+        }
+        else if(direction.equals("up")) {
+            for(int i = 0; i < speed; i++) {// Обработка движения вверх
+                if(!collision.detectCollision(direction, (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+                    if(worldY > - 0) worldY -= 1;
+                }
+            }
+        }
+        else if(direction.equals("left") && !collision.detectCollision(direction, (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+            for(int i = 0; i < speed; i++) {// Обработка движения влево
+                if(worldX > 1) worldX -= 1;
+            }
+        }
+        else if(direction.equals("down") && !collision.detectCollision(direction, (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+            for(int i = 0; i < speed; i++) {// Обработка движения вниз
+                if(worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
+            }
+        }
+        else if(direction.equals("right") && !collision.detectCollision(direction, (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
+            for(int i = 0; i < speed; i++) {// Обработка движения вправо
+                if(worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
+            }
+        }
         // Логика анимации
         spriteCount++;
         if(spriteCount > 20) {

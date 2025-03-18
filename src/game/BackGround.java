@@ -53,7 +53,7 @@ public class BackGround {
                 while(col < GamePanel.maxWorldCol) {
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
-                    GamePanel.worldMap[col][row] = num;
+                    GamePanel.worldMap[row][col] = num;
                     col++;
                 }
                 if(col == GamePanel.maxWorldCol) {
@@ -79,7 +79,7 @@ public class BackGround {
 
         while(worldCol < GamePanel.maxWorldCol && worldRow < GamePanel.maxWorldRow) {
 
-            int tileNum = GamePanel.worldMap[worldCol][worldRow];
+            int tileNum = GamePanel.worldMap[worldRow][worldCol];
 
             int worldX = worldCol * GamePanel.tileSize;
             int worldY = worldRow * GamePanel.tileSize;

@@ -39,8 +39,8 @@ public class GamePanel extends JComponent implements Runnable {
 // Конец настройки FPS UPS
 
 // Настройки карты мира
-    public static final int maxWorldCol = 150;
-    public static final int maxWorldRow = 150;
+    public static final int maxWorldCol = 50;
+    public static final int maxWorldRow = 50;
     public final int worldWidth = tileSize*maxWorldCol;
     public final int worldHeight = tileSize*maxWorldRow;
     public static int[][] worldMap = new int[maxWorldRow][maxWorldCol];
@@ -53,8 +53,8 @@ public class GamePanel extends JComponent implements Runnable {
 
 // Объявление классов Необходимых в процессе разработки
     public CollisionCheker cChecker = new CollisionCheker(this);
-    public Player player = new Player(this);
     public BackGround backGround = new BackGround(this);
+    public Player player = new Player(this, backGround);
 // Конец объявления классов Необходимых в процессе разработки
 
     public GamePanel() { // Конструктор (что-то делает)
