@@ -21,12 +21,12 @@ public class SpriteSheet {
 
     }
 
-    public BufferedImage getSprite(int index, int scaleX, int scaleY) {
+    public BufferedImage getSprite(int index, double scaleX, double scaleY) {
 
-        //index = index % spriteCount;
+//        index = index % spriteCount;
 
-        int x = index % spriteInWidth * scale*scaleX;
-        int y = index / spriteInWidth * scale*scaleY;
+        int x = (int)(index % spriteInWidth * scale*scaleX);
+        int y = (int)(index / spriteInWidth * scale*scaleY);
 
         return sheet.getSubimage(x, y, scale, scale*2);
     }

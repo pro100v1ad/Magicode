@@ -7,6 +7,7 @@ import game.BackGround;
 import graphics.Sprite;
 import graphics.SpriteSheet;
 import utils.Collision;
+import utils.Time;
 import utils.Utils;
 
 import javax.imageio.ImageIO;
@@ -15,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.SocketTimeoutException;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 import static utils.ResourceLoader.loadImage;
 /*
@@ -81,21 +83,11 @@ public class Player extends Entity{ // Класс игрока
 //        worldY = GamePanel.tileSize*22;
         worldX = 100;
         worldY = 100;
-        speed = 4*GamePanel.scale; // scale минимум 1/4 и максимум 2.
+
+        speed = (4*GamePanel.scale)/(GamePanel.UPDATE_RATE_Speed); // scale минимум 1/4 и максимум 2.
     }
 
     public void update() { // Обрабатывает логику игрока.
-        //Попытка исправить проблему съезжания персонажа при масштабировании
-//        if(GamePanel.scroll == 1) {
-//            worldX = tempPosX;
-//            worldY = tempPosY;
-//            GamePanel.scroll = 0;
-//        }
-//        if(GamePanel.scroll == 2) {
-//            tempPosX = (int)worldX;
-//            tempPosY = (int)worldY;
-//            GamePanel.scroll = 1;
-//        }
         // Определяет направление движения все 8
         if (GamePanel.keys[0] && GamePanel.keys[3]) {
             direction = "up_right";
@@ -118,7 +110,7 @@ public class Player extends Entity{ // Класс игрока
         //Проверка коллизии
 
         collision.resetCollisionMap(GamePanel.maxWorldCol*GamePanel.tileSize, GamePanel.maxWorldRow*GamePanel.tileSize);
-        collision.loadCollisionMapFromPlayerPosition((int)worldX, (int)worldY+GamePanel.tileSize/2, GamePanel.tileSize*2, GamePanel.tileSize*4);
+        collision.loadCollisionMapFromPlayerPosition((int)worldX, (int)worldY+GamePanel.tileSize*3, GamePanel.tileSize*2, GamePanel.tileSize*4);
         for(int i = 0; i < GamePanel.maxWorldRow; i++) {
             for(int j = 0; j < GamePanel.maxWorldCol; j++) {
                 if(GamePanel.worldMap[i][j] == 5) {
@@ -126,6 +118,8 @@ public class Player extends Entity{ // Класс игрока
                 }
             }
         }
+
+
         if(direction.equals("up_right")) {
             for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
                 if(!collision.detectCollision("up", (int)worldX, (int)worldY, GamePanel.tileSize*2, GamePanel.tileSize*4)) {
@@ -188,9 +182,10 @@ public class Player extends Entity{ // Класс игрока
                 if(worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
             }
         }
+
         // Логика анимации
         spriteCount++;
-        if(spriteCount > 20) {
+        if(spriteCount > 20*0.6) {
             if(spriteNum == 0) {
                 spriteNum = 1;
             }
@@ -208,6 +203,7 @@ public class Player extends Entity{ // Класс игрока
     }
 
     public void draw(Graphics2D g) { // Рисует игрока
+
 //      image = Utils.rotate(image, 45);
         switch (direction) { // Анимирует движение по направлениям
             case "up": image = playerImage[8 + spriteNum]; break;
@@ -225,6 +221,7 @@ public class Player extends Entity{ // Класс игрока
         }
 
         g.drawImage(image, screenX, screenY, GamePanel.tileSize*2, GamePanel.tileSize*4, null);
+
     }
 }
 

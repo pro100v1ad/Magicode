@@ -19,7 +19,7 @@ public class ResourceLoader {
             image = ImageIO.read(new File(PATH + fileName));
 
         }catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Ошибка чтения изображения!!!");
         }
 
         return image;

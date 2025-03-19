@@ -3,6 +3,7 @@ package game;
 import Tile.Tiles;
 import display.GamePanel;
 import graphics.SpriteSheet;
+import utils.Time;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -10,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import static java.lang.Math.abs;
 import static utils.ResourceLoader.loadImage;
 /*
 Класс для создания заднего фона игры
@@ -95,7 +97,7 @@ public class BackGround {
                     g.drawImage(tiles[tileNum].image, screenX, screenY, GamePanel.tileSize, GamePanel.tileSize, null);
 
                 } catch (Exception e) {
-                    System.out.println("Не удалось загрузить  на позицию " + screenX + " и " + screenY + ": tiles[" + tileNum + "];");
+                    System.out.println("BackGround: Не удалось загрузить  на позицию " + screenX + " и " + screenY + ": tiles[" + tileNum + "];");
                 }
             }
 
@@ -106,5 +108,6 @@ public class BackGround {
                 worldRow++;
             }
         }
+
     }
 }
