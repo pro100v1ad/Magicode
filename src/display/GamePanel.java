@@ -2,6 +2,8 @@ package display;
 
 import Entity.Player;
 import game.BackGround;
+import graphics.Layer;
+import graphics.TextureAtlas;
 import main.Main;
 import object.SuperObject;
 import utils.*;
@@ -44,7 +46,8 @@ public class GamePanel extends JComponent {
     public static final int maxWorldRow = 150;
     public final int worldWidth = tileSize*maxWorldCol;
     public final int worldHeight = tileSize*maxWorldRow;
-    public static int[][] worldMap = new int[maxWorldRow][maxWorldCol];
+//    public static int[][] worldMap = new int[maxWorldRow][maxWorldCol];
+    public static Layer[][] worldMap = new Layer[maxWorldRow][maxWorldCol];
     // Конец настройки карты мира
 // Объявление классов необходимых для работы игры
     private Thread thread1;
@@ -55,10 +58,13 @@ public class GamePanel extends JComponent {
 // Конец объявления классов необходимых для работы игры
 
     // Объявление классов Необходимых в процессе разработки
+    public TextureAtlas textureAtlas = new TextureAtlas(4, 10);
     public BackGround backGround = new BackGround(this);
     public AssetSetter aSetter = new AssetSetter(this);
-    public Player player = new Player(this, backGround);
+    public Player player = new Player(this);
     public SuperObject obj[] = new SuperObject[10];
+    public Collision collision = new Collision();
+
 
 // Конец объявления классов Необходимых в процессе разработки
 
@@ -75,6 +81,8 @@ public class GamePanel extends JComponent {
 
         addKeyListener(new Listeners(this)); // Добавляет возможность считывать клавиши
 //        addMouseWheelListener(new Listeners(this)); // Добавляет возможность считывать колесико мыши
+
+
 
     }
 
@@ -176,7 +184,6 @@ public class GamePanel extends JComponent {
             deltaUpdate += (elapsedTime / UPDATE_INTERVAL);
             while (deltaUpdate > 1) {
                 update2();
-//                System.out.println("gg");
                 upd++;
                 deltaUpdate--;
             }
@@ -210,8 +217,47 @@ public class GamePanel extends JComponent {
     }
 
     public void update2() {
+        if(!player.direction.equals("null")) {
 
-    }
+            collision.resetCollisionMap(maxWorldCol * tileSize, maxWorldRow * tileSize);
+            collision.loadCollisionMapFromPlayerPosition((int) player.worldX, (int) player.worldY + tileSize * 3, tileSize * 2, tileSize * 4);
+            for (int i = 0; i < maxWorldRow; i++) {
+                for (int j = 0; j < maxWorldCol; j++) {
+                    if (worldMap[i][j].getLayer(2) == 5) {
+                        collision.loadCollisionMapFromTiles(i, j, tileSize);
+                    }
+                }
+            }
+            switch (player.direction) {
+                case "up": player.checkCollisionUp = collision.detectCollision("up", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4); break;
+                case "down": player.checkCollisionDown = collision.detectCollision("down", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4); break;
+                case "left": player.checkCollisionLeft = collision.detectCollision("left", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4); break;
+                case "right": player.checkCollisionRight = collision.detectCollision("right", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4); break;
+                case "up_right": {
+                    player.checkCollisionUp = collision.detectCollision("up", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
+                    player.checkCollisionRight = collision.detectCollision("right", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
+                    break;
+                }
+                case "up_left": {
+                    player.checkCollisionUp = collision.detectCollision("up", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
+                    player.checkCollisionLeft = collision.detectCollision("left", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
+                    break;
+                }
+                case "down_left": {
+                    player.checkCollisionDown = collision.detectCollision("down", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
+                    player.checkCollisionLeft = collision.detectCollision("left", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
+                    break;
+                }
+                case "down_right": {
+                    player.checkCollisionDown = collision.detectCollision("down", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
+                    player.checkCollisionRight = collision.detectCollision("right", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
+                    break;
+                }
+            }
+        }
+
+
+    } // end update2
 
     public void render1(){
         g.setColor(Color.BLACK);

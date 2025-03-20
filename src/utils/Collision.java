@@ -1,6 +1,5 @@
 package utils;
 
-import Tile.Tiles;
 import display.GamePanel;
 
 /*
@@ -12,9 +11,6 @@ public class Collision {
     int[][] CollisionMap;
     int MapX, MapY;
 
-    public Collision() {
-
-    }
 
     public void resetCollisionMap(int MapX, int MapY) { // Очищает карту препятствий от всех препятствий и игрока
         CollisionMap = new int[MapY][MapX];
