@@ -13,12 +13,12 @@ public class AssetSetter {
 
     public void setObject () {
         gp.obj[0] = new OBJ_Book(1);
-        gp.obj[0].worldX = 150;
-        gp.obj[0].worldY = 150;
+        gp.obj[0].worldX = GamePanel.tileSize*125;
+        gp.obj[0].worldY = GamePanel.tileSize*125;
 
         gp.obj[1] = new OBJ_Book(1);
-        gp.obj[1].worldX = 50;
-        gp.obj[1].worldY = 50;
+        gp.obj[1].worldX = GamePanel.tileSize*130;
+        gp.obj[1].worldY = GamePanel.tileSize*130;
 
     }
 

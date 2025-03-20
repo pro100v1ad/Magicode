@@ -1,4 +1,7 @@
 package graphics;
+
+import display.GamePanel;
+
 /*
 Принимает строку "000_000"
 и преобразовывает ее в два числа
@@ -8,6 +11,7 @@ package graphics;
 public class Layer {
     private int firstLayer;
     private int secondLayer;
+    private boolean collision = false;
 
     public void setLayers(String input) {
         // Разделяем строку по символу '_'
@@ -21,6 +25,13 @@ public class Layer {
             // Преобразуем вторую часть в число
             secondLayer = Integer.parseInt(parts[1]);
 
+            for(int i = 0; i < GamePanel.whoHaveCollision.length; i++) {
+                if(GamePanel.whoHaveCollision[i] != 0 && (GamePanel.whoHaveCollision[i] == firstLayer || GamePanel.whoHaveCollision[i] == secondLayer)) {
+                    setCollision(true);
+                    break;
+                }
+            }
+
         } else {
             System.out.println("Строка не соответствует формату 'число_число'");
         }
@@ -29,6 +40,12 @@ public class Layer {
     public int getLayer(int number) {
         if(number == 1) return firstLayer;
         else return secondLayer;
+    }
+    public void setCollision(boolean collision) {
+        this.collision = collision;
+    }
+    public boolean getCollision() {
+        return collision;
     }
 
 }

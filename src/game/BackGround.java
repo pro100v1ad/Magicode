@@ -3,16 +3,9 @@ package game;
 import Tile.Tiles;
 import display.GamePanel;
 import graphics.Layer;
-import graphics.SpriteSheet;
-import graphics.Texture;
-import utils.Time;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-
-import static java.lang.Math.abs;
-import static utils.ResourceLoader.loadImage;
 
 public class BackGround {
     // Для работы с графикой
@@ -34,8 +27,10 @@ public class BackGround {
         for (int i = 0; i < tiles.length; i++) {
             tiles[i] = new Tiles(); // Initialize each element
         }
-        createMap("/maps/map01.txt");
-        loadMap("/maps/map01.txt");
+        String mapPath = "src/maps/map01.txt";
+        setCollision();
+        createMap(mapPath);
+        loadMap(mapPath);
         loadTiles();
     }
     //TEMP
@@ -45,16 +40,32 @@ public class BackGround {
 
             for (int i = 0; i < GamePanel.maxWorldRow; i++) {
                 for (int j = 0; j < GamePanel.maxWorldCol; j++) {
-                    // Генерируем два случайных числа
-                    int first = 1; // Число от 0 до 999
-                    int second = 1; // Число от 0 до 999
 
-                    // Формируем строку в формате "число_число"
-                    String line = first + "_" + second;
+                    String line = 1 + "_" + 1;
 
-                    // Записываем строку в файл
+                    if(i == 50 && j > 50) line = 1 + "_" + 11;
+                    if(j == 50) line = 1 + "_" + 13;
+                    if(i == 200) line = 1 + "_" + 10;
+                    if(j == 200) line = 1 + "_" + 12;
+                    if(j == 220) line = 1 + "_" + 13;
+
+                    if (j < 50) line = 1 + "_" + 9;
+                    if(j > 200 && j < 220) line = 1 + "_" + 9;
+                    if(i < 50) line = 1 + "_" + 9;
+
+                    if(i == 50 && j == 50) line = 1 + "_" + 9;
+                    if(i == 50 && j == 200) line = 1 + "_" + 9;
+                    if(i == 200 && j == 50) line = 1 + "_" + 9;
+                    if(i == 200 && j == 200) line = 1 + "_" + 9;
+
+                    if(i == 50 && j == 220) line = 1 + "_" + 9;
+                    if(i == 200 && j == 220) line = 1 + "_" + 9;
+
+                    if(i > 200) line = 1 + "_" + 9;
+
+
+
                     writer.write(line);
-
                     // Добавляем пробел между элементами в строке (кроме последнего)
                     if (j < GamePanel.maxWorldCol - 1) {
                         writer.write(" ");
@@ -67,8 +78,20 @@ public class BackGround {
         } catch (IOException e) {
             System.out.println("Ошибка при записи в файл: " + e.getMessage());
         }
+
     }
+
+
     //////
+
+    public void setCollision() {
+        GamePanel.whoHaveCollision[0] = 9;
+        GamePanel.whoHaveCollision[1] = 11;
+        GamePanel.whoHaveCollision[2] = 13;
+        GamePanel.whoHaveCollision[3] = 10;
+        GamePanel.whoHaveCollision[4] = 12;
+    }
+
     public void loadTiles() {
         // Ensure textureAtlas is initialized
         if (gp.textureAtlas == null) {
@@ -98,15 +121,13 @@ public class BackGround {
     }
 
     public void loadMap(String path) { // загружает мир из файла
-
         for (int i = 0; i < GamePanel.maxWorldRow; i++) {
             for (int j = 0; j < GamePanel.maxWorldCol; j++) {
                 GamePanel.worldMap[i][j] = new Layer();
             }
         }
 
-        try {
-            InputStream is = getClass().getResourceAsStream(path);
+        try (InputStream is = new FileInputStream(path)) { // Используем FileInputStream
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             int col = 0;
@@ -114,6 +135,9 @@ public class BackGround {
 
             while (col < GamePanel.maxWorldCol && row < GamePanel.maxWorldRow) {
                 String line = br.readLine();
+                if (line == null) {
+                    break; // Если файл закончился раньше, чем ожидалось
+                }
 
                 while (col < GamePanel.maxWorldCol) {
                     String numbers[] = line.split(" ");
@@ -125,8 +149,6 @@ public class BackGround {
                     row++;
                 }
             }
-            br.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

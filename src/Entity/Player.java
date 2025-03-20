@@ -72,8 +72,8 @@ public class Player extends Entity{ // Класс игрока
     }
 
     public void setDefaultValues() {
-        worldX = 100;
-        worldY = 100;
+        worldX = GamePanel.tileSize*120;
+        worldY = GamePanel.tileSize*120;
 
         speed = (4*GamePanel.scale)/(GamePanel.UPDATE_RATE_Speed); // scale минимум 1/4 и максимум 2.
     }

@@ -35,19 +35,19 @@ public class GamePanel extends JComponent {
 
     // Настройка FPS UPS
     public static final float UPDATE_RATE = 40.0f;
-    public static final float DRAW_RATE = 100.0f;
+    public static final float DRAW_RATE = 60.0f;
     public static final float UPDATE_RATE_Speed = UPDATE_RATE/100;
     //    public static final float UPDATE_INTERVAL = Time.SECOND / UPDATE_RATE;
     public static final long IDLE_TIME = 1;
 // Конец настройки FPS UPS
 
     // Настройки карты мира
-    public static final int maxWorldCol = 150;
-    public static final int maxWorldRow = 150;
+    public static final int maxWorldCol = 300;
+    public static final int maxWorldRow = 250;
     public final int worldWidth = tileSize*maxWorldCol;
     public final int worldHeight = tileSize*maxWorldRow;
-//    public static int[][] worldMap = new int[maxWorldRow][maxWorldCol];
     public static Layer[][] worldMap = new Layer[maxWorldRow][maxWorldCol];
+    public static int whoHaveCollision[] = new int[100];
     // Конец настройки карты мира
 // Объявление классов необходимых для работы игры
     private Thread thread1;
@@ -223,7 +223,7 @@ public class GamePanel extends JComponent {
             collision.loadCollisionMapFromPlayerPosition((int) player.worldX, (int) player.worldY + tileSize * 3, tileSize * 2, tileSize * 4);
             for (int i = 0; i < maxWorldRow; i++) {
                 for (int j = 0; j < maxWorldCol; j++) {
-                    if (worldMap[i][j].getLayer(2) == 5) {
+                    if (worldMap[i][j].getCollision()) {
                         collision.loadCollisionMapFromTiles(i, j, tileSize);
                     }
                 }
