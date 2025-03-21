@@ -3,6 +3,8 @@ package game;
 import Tile.Tiles;
 import display.GamePanel;
 import graphics.Layer;
+import structure.Bridge;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -14,6 +16,7 @@ public class BackGround {
     private int scaleX, scaleY;
     //Доступ к главной панели
     GamePanel gp;
+    Bridge bridge;
 
     public BackGround(GamePanel gp) {
         // Ensure gp is not null
@@ -32,6 +35,10 @@ public class BackGround {
         createMap(mapPath);
         loadMap(mapPath);
         loadTiles();
+
+        bridge = new Bridge(gp, 5, "horizontal", false, GamePanel.tileSize*10, GamePanel.tileSize*10);
+
+
     }
     //TEMP
     public void createMap(String mapName) {
@@ -161,6 +168,8 @@ public class BackGround {
         int worldCol = 0;
         int worldRow = 0;
 
+
+
         while (worldCol < GamePanel.maxWorldCol && worldRow < GamePanel.maxWorldRow) {
             int tileNum1 = GamePanel.worldMap[worldRow][worldCol].getLayer(1);
             int tileNum2 = GamePanel.worldMap[worldRow][worldCol].getLayer(2);
@@ -179,7 +188,14 @@ public class BackGround {
                         g.drawImage(tiles[tileNum1].image, screenX, screenY, GamePanel.tileSize, GamePanel.tileSize, null);
                     }
                     if(GamePanel.worldMap[worldRow][worldCol].getLayer(2) != 0) {
-                        g.drawImage(tiles[tileNum2].image, screenX, screenY, GamePanel.tileSize, GamePanel.tileSize, null);
+
+                        if(GamePanel.worldMap[worldRow][worldCol].getLayer(2) == 99) {
+//                            bridge.draw(g); ПРОДУМАТЬ КАК РИСОВАТЬ СТРУКТУРЫ И РАЗОБРАТЬСЯ В ОТРИСОВКИ МИРА ВСЕТАКИ
+                        } else {
+                            g.drawImage(tiles[tileNum2].image, screenX, screenY, GamePanel.tileSize, GamePanel.tileSize, null);
+
+                        }
+
                     }
 
                 } catch (Exception e) {
@@ -193,5 +209,6 @@ public class BackGround {
                 worldRow++;
             }
         }
+        bridge.draw(g);
     }
 }

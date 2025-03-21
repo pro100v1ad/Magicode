@@ -36,6 +36,16 @@ public class TextureAtlas {
         textures[1][6].loadTexture("tiles/water/waterUpRight.png");
         textures[1][7].loadTexture("tiles/water/waterDownLeft.png");
         textures[1][8].loadTexture("tiles/water/waterDownRight.png");
+
+        textures[2][0].loadTexture("structure/bridge/horizontal/bridgeStart.png");
+        textures[2][1].loadTexture("structure/bridge/horizontal/bridgeEnd.png");
+        textures[2][2].loadTexture("structure/bridge/horizontal/bridgePart.png");
+        textures[2][3].loadTexture("structure/bridge/horizontal/bridgeBreak.png");
+
+        textures[3][0].loadTexture("structure/bridge/vertical/bridgeStart.png");
+        textures[3][1].loadTexture("structure/bridge/vertical/bridgeEnd.png");
+        textures[3][2].loadTexture("structure/bridge/vertical/bridgePart.png");
+        textures[3][3].loadTexture("structure/bridge/vertical/bridgeBreak.png");
     }
 
 

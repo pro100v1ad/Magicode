@@ -58,7 +58,7 @@ public class GamePanel extends JComponent {
 // Конец объявления классов необходимых для работы игры
 
     // Объявление классов Необходимых в процессе разработки
-    public TextureAtlas textureAtlas = new TextureAtlas(4, 10);
+    public TextureAtlas textureAtlas = new TextureAtlas(8, 10);
     public BackGround backGround = new BackGround(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public Player player = new Player(this);
