@@ -2,9 +2,21 @@ package structure;
 
 import Tile.Tiles;
 
-public class Structure {
+import java.awt.*;
+
+public abstract class Structure {
 
     protected Tiles[] tiles;
-    protected int posX, posY;
+    protected int worldX, worldY;
+    protected String direction;
+    protected boolean isBreak;
+    protected String name;
 
+    protected void loadTextures() {
+
+    }
+
+    public void draw(Graphics2D g) {
+
+    }
 }

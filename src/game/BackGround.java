@@ -16,7 +16,7 @@ public class BackGround {
     private int scaleX, scaleY;
     //Доступ к главной панели
     GamePanel gp;
-    Bridge bridge;
+//    Bridge bridge;
 
     public BackGround(GamePanel gp) {
         // Ensure gp is not null
@@ -30,13 +30,13 @@ public class BackGround {
         for (int i = 0; i < tiles.length; i++) {
             tiles[i] = new Tiles(); // Initialize each element
         }
-        String mapPath = "src/maps/map01.txt";
+        String mapPath = "src/maps/NewWorld/BackGround/backGround.txt";
         setCollision();
         createMap(mapPath);
         loadMap(mapPath);
         loadTiles();
 
-        bridge = new Bridge(gp, 5, "horizontal", false, GamePanel.tileSize*10, GamePanel.tileSize*10);
+//        bridge = new Bridge(gp, "1", 5, "up", false, GamePanel.tileSize*10, GamePanel.tileSize*20);
 
 
     }
@@ -209,6 +209,6 @@ public class BackGround {
                 worldRow++;
             }
         }
-        bridge.draw(g);
+//        bridge.draw(g);
     }
 }

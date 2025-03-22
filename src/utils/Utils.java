@@ -65,4 +65,5 @@ public class Utils {
 //    public static void scaleUpdate(GamePanel gp) { // обновление масштаба карты
 //        GamePanel.tileSize = (int)(GamePanel.originalTileSize*GamePanel.scale);
 //    }
+
 }

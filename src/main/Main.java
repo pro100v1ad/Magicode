@@ -24,7 +24,6 @@ public class Main {
 
         panel.setupGame();
         panel.start();
-        System.out.println("Start");
 
 
     }

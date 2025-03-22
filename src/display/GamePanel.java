@@ -2,6 +2,7 @@ package display;
 
 import Entity.Player;
 import game.BackGround;
+import game.StructureSetter;
 import graphics.Layer;
 import graphics.TextureAtlas;
 import main.Main;
@@ -61,6 +62,7 @@ public class GamePanel extends JComponent {
     public TextureAtlas textureAtlas = new TextureAtlas(8, 10);
     public BackGround backGround = new BackGround(this);
     public AssetSetter aSetter = new AssetSetter(this);
+    public StructureSetter sSetter = new StructureSetter(this);
     public Player player = new Player(this);
     public SuperObject obj[] = new SuperObject[10];
     public Collision collision = new Collision();
@@ -271,6 +273,8 @@ public class GamePanel extends JComponent {
             }
         }
 
+
+        sSetter.draw(g);
         player.draw(g);
         draw();
     }
