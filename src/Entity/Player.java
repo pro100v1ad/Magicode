@@ -5,11 +5,12 @@ package Entity;
 import display.GamePanel;
 import game.BackGround;
 import graphics.SpriteSheet;
-import utils.Collision;
+import utils.ResourceLoader;
+//import utils.Collision;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.sqrt;
-import static utils.ResourceLoader.loadImage;
+
 /*
 Класс для создания игрока
  */
@@ -35,12 +36,13 @@ public class Player extends Entity{ // Класс игрока
     public boolean checkCollisionRight = false;
     public boolean checkCollisionLeft = false;
 
-    private Collision collision;
+//    private Collision collision;
+    public ResourceLoader rs = new ResourceLoader();
     private BackGround bg;
 
     public Player(GamePanel gp){
         // Загрузка спрайтов
-        imageMap = loadImage("playerSkin.png");
+        imageMap = rs.loadImage("/res/playerSkin.png");
         scaleX = 1;
         scaleY = 2;
         setDefaultValues();
@@ -68,7 +70,7 @@ public class Player extends Entity{ // Класс игрока
         // Для доступа к главной панели
         this.gp = gp;
 
-        collision = new Collision();
+//        collision = new Collision();
     }
 
     public void setDefaultValues() {
@@ -135,14 +137,16 @@ public class Player extends Entity{ // Класс игрока
                     if(worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
                 }
             }
-        } else if(direction.equals("up") && !checkCollisionUp) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(worldY > - 0) worldY -= 1;
-        } else if(direction.equals("down") && !checkCollisionDown) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
-        } else if(direction.equals("left") && !checkCollisionLeft) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(worldX > 1) worldX -= 1;
-        } else if(direction.equals("right") && !checkCollisionRight) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
+        } else if(direction.equals("up")) {
+            for(int i = 0; i < speed/sqrt(2); i++) {
+                if(worldY > - 0 && !checkCollisionUp) worldY -= 1;
+            }
+        } else if(direction.equals("down")) {
+            for(int i = 0; i < speed/sqrt(2); i++) if(!checkCollisionDown && worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
+        } else if(direction.equals("left")) {
+            for(int i = 0; i < speed/sqrt(2); i++) if(worldX > 1 && !checkCollisionLeft) worldX -= 1;
+        } else if(direction.equals("right")) {
+            for(int i = 0; i < speed/sqrt(2); i++) if(!checkCollisionRight && worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
         }
 
         // Логика анимации

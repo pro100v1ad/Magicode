@@ -27,6 +27,36 @@ public class Bridge extends Structure{
         loadTextures();
 
     }
+
+    public int getW() {
+        int w;
+        if(direction.equals("up") || direction.equals("down")) {
+            w = 8*GamePanel.tileSize;
+        } else {
+            if(isBreak) {
+                w = (13 + 2*len)*GamePanel.tileSize;
+            } else {
+                w = (8 + 2*len)*GamePanel.tileSize;
+            }
+        }
+        return w;
+    }
+
+    public int getH() {
+        int h;
+        if(direction.equals("up") || direction.equals("down")) {
+
+            if(isBreak) {
+                h = (13 + 2*len)*GamePanel.tileSize;
+            } else {
+                h = (8 + 2*len)*GamePanel.tileSize;
+            }
+        } else {
+            h = 8*GamePanel.tileSize;
+        }
+        return h;
+    }
+
     @Override
     protected void loadTextures() {
         tiles = new Tiles[4];

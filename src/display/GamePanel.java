@@ -7,6 +7,7 @@ import graphics.Layer;
 import graphics.TextureAtlas;
 import main.Main;
 import object.SuperObject;
+import structure.Structure;
 import utils.*;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ public class GamePanel extends JComponent {
 
     public static final String TITLE = "Magicode";
     public static boolean running; // Отвечает за то, что запущена игра или нет
+    public static int isUpgrade = 1;
 
     public static boolean[] keys = new boolean[256]; // Содержит список состояния нажатия всех необходимых клавиш
     public static int scroll = 0;
@@ -65,7 +67,7 @@ public class GamePanel extends JComponent {
     public StructureSetter sSetter = new StructureSetter(this);
     public Player player = new Player(this);
     public SuperObject obj[] = new SuperObject[10];
-    public Collision collision = new Collision();
+//    public Collision collision = new Collision();
 
 
 // Конец объявления классов Необходимых в процессе разработки
@@ -207,59 +209,54 @@ public class GamePanel extends JComponent {
         if(running) return;
         running = true;
 
+        thread2 = new Thread(this::run2);
+        thread2.start();
+
         thread1 = new Thread(this::run1);
         thread1.start(); // Вызывает функцию run(), она выше.
 
-        thread2 = new Thread(this::run2);
-        thread2.start();
+
     }
 
     public void update1() {
-        player.update();
+            player.update();
+
     }
 
     public void update2() {
-        if(!player.direction.equals("null")) {
+//        if (!player.direction.equals("null")) {
+//            // Обновляем карту коллизий только если игрок двигался
+//            collision.resetCollisionMap(maxWorldCol * tileSize, maxWorldRow * tileSize);
+//            collision.loadCollisionMapFromPlayerPosition((int) player.worldX, (int) player.worldY + tileSize * 3, tileSize * 2, tileSize * 1);
+//
+//            // Проверяем только область вокруг игрока (10x10 тайлов)
+//            int playerTileX = (int) player.worldX / tileSize;
+//            int playerTileY = (int) player.worldY / tileSize;
+//            int range = 10; // Проверяем область 10x10 тайлов вокруг игрока
+//
+//            for (int i = playerTileY - range; i < playerTileY + range; i++) {
+//                for (int j = playerTileX - range; j < playerTileX + range; j++) {
+//                    if (i >= 0 && i < maxWorldRow && j >= 0 && j < maxWorldCol) {
+//                        if (worldMap[i][j].getCollision()) {
+//                            collision.loadCollisionMapFromTiles(i, j, tileSize);
+//                        }
+//                    }
+//                }
+//            }
+//
+//            // Обновляем коллизии для структур
+//            for (Structure s : sSetter.getStructure()) {
+//                if (s != null) {
+//                    collision.loadCollisionMapFromStructure(s);
+//                }
+//            }
+//
+//            // Проверка коллизий для игрока
+//
+//        }
+    }
 
-            collision.resetCollisionMap(maxWorldCol * tileSize, maxWorldRow * tileSize);
-            collision.loadCollisionMapFromPlayerPosition((int) player.worldX, (int) player.worldY + tileSize * 3, tileSize * 2, tileSize * 4);
-            for (int i = 0; i < maxWorldRow; i++) {
-                for (int j = 0; j < maxWorldCol; j++) {
-                    if (worldMap[i][j].getCollision()) {
-                        collision.loadCollisionMapFromTiles(i, j, tileSize);
-                    }
-                }
-            }
-            switch (player.direction) {
-                case "up": player.checkCollisionUp = collision.detectCollision("up", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4); break;
-                case "down": player.checkCollisionDown = collision.detectCollision("down", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4); break;
-                case "left": player.checkCollisionLeft = collision.detectCollision("left", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4); break;
-                case "right": player.checkCollisionRight = collision.detectCollision("right", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4); break;
-                case "up_right": {
-                    player.checkCollisionUp = collision.detectCollision("up", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
-                    player.checkCollisionRight = collision.detectCollision("right", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
-                    break;
-                }
-                case "up_left": {
-                    player.checkCollisionUp = collision.detectCollision("up", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
-                    player.checkCollisionLeft = collision.detectCollision("left", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
-                    break;
-                }
-                case "down_left": {
-                    player.checkCollisionDown = collision.detectCollision("down", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
-                    player.checkCollisionLeft = collision.detectCollision("left", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
-                    break;
-                }
-                case "down_right": {
-                    player.checkCollisionDown = collision.detectCollision("down", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
-                    player.checkCollisionRight = collision.detectCollision("right", (int) player.worldX, (int) player.worldY, GamePanel.tileSize * 2, GamePanel.tileSize * 4);
-                    break;
-                }
-            }
-        }
-
-
-    } // end update2
+    // Вспомогательный метод для проверки коллизий игрока
 
     public void render1(){
         g.setColor(Color.BLACK);

@@ -19,4 +19,17 @@ public abstract class Structure {
     public void draw(Graphics2D g) {
 
     }
+
+    public String getName() {
+        return name;
+    }
+    public int getWorldX() {
+        return worldX;
+    }
+    public int getWorldY() {
+        return worldY;
+    }
+    public boolean getBreak() {
+        return isBreak;
+    }
 }

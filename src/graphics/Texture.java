@@ -1,15 +1,17 @@
 package graphics;
 
+import utils.ResourceLoader;
+
 import java.awt.image.BufferedImage;
 
-import static utils.ResourceLoader.loadImage;
+
 
 public class Texture {
 
     private BufferedImage texture = null;
-
+    ResourceLoader rs = new ResourceLoader();
     public void loadTexture(String PATH) {
-        texture = loadImage(PATH);
+        texture = rs.loadImage(PATH);
     }
     public BufferedImage getTexture() {
         return texture;

@@ -30,9 +30,9 @@ public class BackGround {
         for (int i = 0; i < tiles.length; i++) {
             tiles[i] = new Tiles(); // Initialize each element
         }
-        String mapPath = "src/maps/NewWorld/BackGround/backGround.txt";
+        String mapPath = "/maps/NewWorld/BackGround/backGround.txt";
         setCollision();
-        createMap(mapPath);
+//        createMap(mapPath);
         loadMap(mapPath);
         loadTiles();
 
@@ -41,52 +41,53 @@ public class BackGround {
 
     }
     //TEMP
-    public void createMap(String mapName) {
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(mapName))) {
-
-            for (int i = 0; i < GamePanel.maxWorldRow; i++) {
-                for (int j = 0; j < GamePanel.maxWorldCol; j++) {
-
-                    String line = 1 + "_" + 1;
-
-                    if(i == 50 && j > 50) line = 1 + "_" + 11;
-                    if(j == 50) line = 1 + "_" + 13;
-                    if(i == 200) line = 1 + "_" + 10;
-                    if(j == 200) line = 1 + "_" + 12;
-                    if(j == 220) line = 1 + "_" + 13;
-
-                    if (j < 50) line = 1 + "_" + 9;
-                    if(j > 200 && j < 220) line = 1 + "_" + 9;
-                    if(i < 50) line = 1 + "_" + 9;
-
-                    if(i == 50 && j == 50) line = 1 + "_" + 9;
-                    if(i == 50 && j == 200) line = 1 + "_" + 9;
-                    if(i == 200 && j == 50) line = 1 + "_" + 9;
-                    if(i == 200 && j == 200) line = 1 + "_" + 9;
-
-                    if(i == 50 && j == 220) line = 1 + "_" + 9;
-                    if(i == 200 && j == 220) line = 1 + "_" + 9;
-
-                    if(i > 200) line = 1 + "_" + 9;
-
-
-
-                    writer.write(line);
-                    // Добавляем пробел между элементами в строке (кроме последнего)
-                    if (j < GamePanel.maxWorldCol - 1) {
-                        writer.write(" ");
-                    }
-                }
-                // Переходим на новую строку после каждой строки массива
-                writer.newLine();
-            }
-
-        } catch (IOException e) {
-            System.out.println("Ошибка при записи в файл: " + e.getMessage());
-        }
-
-    }
+//    public void createMap(String mapName) {
+//
+//
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(mapName))) {
+//
+//            for (int i = 0; i < GamePanel.maxWorldRow; i++) {
+//                for (int j = 0; j < GamePanel.maxWorldCol; j++) {
+//
+//                    String line = 1 + "_" + 1;
+//
+//                    if(i == 50 && j > 50) line = 1 + "_" + 11;
+//                    if(j == 50) line = 1 + "_" + 13;
+//                    if(i == 200) line = 1 + "_" + 10;
+//                    if(j == 200) line = 1 + "_" + 12;
+//                    if(j == 220) line = 1 + "_" + 13;
+//
+//                    if (j < 50) line = 1 + "_" + 9;
+//                    if(j > 200 && j < 220) line = 1 + "_" + 9;
+//                    if(i < 50) line = 1 + "_" + 9;
+//
+//                    if(i == 50 && j == 50) line = 1 + "_" + 9;
+//                    if(i == 50 && j == 200) line = 1 + "_" + 9;
+//                    if(i == 200 && j == 50) line = 1 + "_" + 9;
+//                    if(i == 200 && j == 200) line = 1 + "_" + 9;
+//
+//                    if(i == 50 && j == 220) line = 1 + "_" + 9;
+//                    if(i == 200 && j == 220) line = 1 + "_" + 9;
+//
+//                    if(i > 200) line = 1 + "_" + 9;
+//
+//
+//
+//                    writer.write(line);
+//                    // Добавляем пробел между элементами в строке (кроме последнего)
+//                    if (j < GamePanel.maxWorldCol - 1) {
+//                        writer.write(" ");
+//                    }
+//                }
+//                // Переходим на новую строку после каждой строки массива
+//                writer.newLine();
+//            }
+//
+//        } catch (IOException e) {
+//            System.out.println("Ошибка при записи в файл: " + e.getMessage());
+//        }
+//
+//    }
 
 
     //////
@@ -134,7 +135,13 @@ public class BackGround {
             }
         }
 
-        try (InputStream is = new FileInputStream(path)) { // Используем FileInputStream
+        // Используем getResourceAsStream для чтения ресурсов
+        try (InputStream is = getClass().getResourceAsStream(path)) {
+            if (is == null) {
+                System.out.println("Ошибка: файл не найден! " + path);
+                return;
+            }
+
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             int col = 0;

@@ -1,47 +1,62 @@
 package utils;
 
-import main.Main;
-
 import javax.sound.sampled.*;
-import java.io.File;
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 
 public class Sound {
 
-    Clip clip;
-    File soundFile[] = new File[30];
+    private Clip clip;
+    private String[] soundFiles = new String[30];
+
     public Sound() {
-        try {
-            soundFile[0] = new File("res/Sound/Magicode.wav"); //Звуковой файл
-        } catch (Exception e) {
-            System.out.println("Sound Constructor Error");
-        }
+        // Указываем пути к звуковым файлам относительно ресурсов
+        soundFiles[0] = "/res/Sound/Magicode.wav";
     }
 
     public void setFile(int i) {
+        try {
+            InputStream audioSrc = getClass().getResourceAsStream(soundFiles[i]);
+            if (audioSrc == null) {
+                System.out.println("Ошибка: звуковой файл не найден! " + soundFiles[i]);
+                return;
+            }
 
-        try{
-            AudioInputStream ais = AudioSystem.getAudioInputStream(soundFile[i]);
+            // Оберните InputStream в BufferedInputStream
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(audioSrc);
+            AudioInputStream ais = AudioSystem.getAudioInputStream(bufferedInputStream);
             clip = AudioSystem.getClip();
-
             clip.open(ais);
-        }catch (Exception e) {
-            System.out.println("Ошибка в Sound");
+            System.out.println("Звуковой файл успешно загружен: " + soundFiles[i]);
+        } catch (Exception e) {
+            System.out.println("Ошибка в Sound: " + e.getMessage());
         }
-
     }
+
     public void play() {
+        if (clip == null) {
+            System.out.println("Ошибка: звуковой файл не загружен!");
+            return;
+        }
         clip.setFramePosition(0);
         clip.start();
     }
 
     public void loop() {
+        if (clip == null) {
+            System.out.println("Ошибка: звуковой файл не загружен!");
+            return;
+        }
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void stop() {
-        clip.stop(); //Останавливаем
-        clip.close(); //Закрываем
+        if (clip == null) {
+            System.out.println("Ошибка: звуковой файл не загружен!");
+            return;
+        }
+        clip.stop();
+        clip.close();
     }
 }
