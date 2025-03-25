@@ -2,7 +2,6 @@ package utils;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class Sound {

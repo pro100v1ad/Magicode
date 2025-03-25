@@ -47,9 +47,8 @@ public class GamePanel extends JComponent {
     // Настройки карты мира
     public static final int maxWorldCol = 300;
     public static final int maxWorldRow = 250;
-    public final int worldWidth = tileSize*maxWorldCol;
-    public final int worldHeight = tileSize*maxWorldRow;
-    public static Layer[][] worldMap = new Layer[maxWorldRow][maxWorldCol];
+    public static final int worldWidth = tileSize*maxWorldCol;
+    public static final int worldHeight = tileSize*maxWorldRow;
     public static int whoHaveCollision[] = new int[100];
     // Конец настройки карты мира
 // Объявление классов необходимых для работы игры
@@ -61,30 +60,28 @@ public class GamePanel extends JComponent {
 // Конец объявления классов необходимых для работы игры
 
     // Объявление классов Необходимых в процессе разработки
-    public TextureAtlas textureAtlas = new TextureAtlas(8, 10);
+    public Collision collision = new Collision(worldWidth, worldHeight, this);
+
+    public TextureAtlas textureAtlas = new TextureAtlas(8, 16);
     public BackGround backGround = new BackGround(this);
     public AssetSetter aSetter = new AssetSetter(this);
     public StructureSetter sSetter = new StructureSetter(this);
     public Player player = new Player(this);
     public SuperObject obj[] = new SuperObject[10];
-//    public Collision collision = new Collision();
+
 
 
 // Конец объявления классов Необходимых в процессе разработки
 
     public GamePanel() { // Конструктор (что-то делает)
         super();
-//        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-//        WIDTH = (int)dimension.getWidth()*3/4;
-//        HEIGHT = (int)dimension.getHeight()*3/4;
+
 
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT)); // устанавливает размеры окна приложения
-        setFocusable(true); // ??
-        requestFocus(); // ??
-
+        setFocusable(true);
+        requestFocus();
         addKeyListener(new Listeners(this)); // Добавляет возможность считывать клавиши
-//        addMouseWheelListener(new Listeners(this)); // Добавляет возможность считывать колесико мыши
 
 
 
@@ -204,75 +201,44 @@ public class GamePanel extends JComponent {
     }
 
 
-    public void start() { // Вспомогательная функция для запуска потока
-
+    public void start() {
         if(running) return;
         running = true;
 
-        thread2 = new Thread(this::run2);
-        thread2.start();
-
         thread1 = new Thread(this::run1);
-        thread1.start(); // Вызывает функцию run(), она выше.
-
-
+        thread2 = new Thread(this::run2);
+        thread1.start();
+        thread2.start();
     }
 
     public void update1() {
-            player.update();
-
+        player.update();
     }
 
     public void update2() {
-//        if (!player.direction.equals("null")) {
-//            // Обновляем карту коллизий только если игрок двигался
-//            collision.resetCollisionMap(maxWorldCol * tileSize, maxWorldRow * tileSize);
-//            collision.loadCollisionMapFromPlayerPosition((int) player.worldX, (int) player.worldY + tileSize * 3, tileSize * 2, tileSize * 1);
-//
-//            // Проверяем только область вокруг игрока (10x10 тайлов)
-//            int playerTileX = (int) player.worldX / tileSize;
-//            int playerTileY = (int) player.worldY / tileSize;
-//            int range = 10; // Проверяем область 10x10 тайлов вокруг игрока
-//
-//            for (int i = playerTileY - range; i < playerTileY + range; i++) {
-//                for (int j = playerTileX - range; j < playerTileX + range; j++) {
-//                    if (i >= 0 && i < maxWorldRow && j >= 0 && j < maxWorldCol) {
-//                        if (worldMap[i][j].getCollision()) {
-//                            collision.loadCollisionMapFromTiles(i, j, tileSize);
-//                        }
-//                    }
-//                }
-//            }
-//
-//            // Обновляем коллизии для структур
-//            for (Structure s : sSetter.getStructure()) {
-//                if (s != null) {
-//                    collision.loadCollisionMapFromStructure(s);
-//                }
-//            }
-//
-//            // Проверка коллизий для игрока
-//
-//        }
+
+        // Теперь здесь можно обрабатывать другие сущности
     }
-
-    // Вспомогательный метод для проверки коллизий игрока
-
     public void render1(){
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
         backGround.draw(g);
 
+        // Рисуем объекты
         for(int i = 0; i < obj.length; i++) {
             if(obj[i] != null) {
                 obj[i].draw(g, this);
             }
         }
 
-
         sSetter.draw(g);
         player.draw(g);
+
+        // Для отладки можно временно включить:
+//        collision.drawEntity(g);
+//        collision.drawTiles(g);
+//        collision.drawCollision(g);
         draw();
     }
 

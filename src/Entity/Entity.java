@@ -1,12 +1,20 @@
 package Entity;
 
-import java.awt.*;
+import display.GamePanel;
 
-public class Entity { // Родительский класс для всех сущностей
 
-    public double worldX, worldY;
+public class Entity {
+    public double worldX, worldY; // Точные координаты
+    public int screenX, screenY;  // Координаты на экране
     public double speed;
+    public String direction = "null";
 
-    public Rectangle solidArea;
-    public boolean collisionOn = false;
+    public int collisionX;
+    public int collisionY;
+    public int collisionWidth = GamePanel.tileSize;
+    public int collisionHeight = GamePanel.tileSize;
+
+    public int collisionCode = 2; // Уникальный код для игрока
+
+
 }

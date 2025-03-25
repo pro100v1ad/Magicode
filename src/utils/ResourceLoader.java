@@ -13,20 +13,6 @@ public class ResourceLoader {
 
     public static final String PATH = "src/res/";
 
-//    public static BufferedImage loadImage(String fileName) {
-//        BufferedImage image = null;
-//
-//        try {
-//
-//            image = ImageIO.read(new File(PATH + fileName));
-//
-//        }catch (IOException e) {
-//            System.out.println("Ошибка чтения изображения!!!");
-//        }
-//
-//        return image;
-//    }
-
     public BufferedImage loadImage(String path) {
         try {
             InputStream inputStream = getClass().getResourceAsStream(path);

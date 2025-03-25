@@ -32,4 +32,7 @@ public abstract class Structure {
     public boolean getBreak() {
         return isBreak;
     }
+    public String getDirection() {
+        return direction;
+    }
 }

@@ -46,6 +46,27 @@ public class TextureAtlas {
         textures[3][1].loadTexture("/res/structure/bridge/vertical/bridgeEnd.png");
         textures[3][2].loadTexture("/res/structure/bridge/vertical/bridgePart.png");
         textures[3][3].loadTexture("/res/structure/bridge/vertical/bridgeBreak.png");
+
+        textures[4][0].loadTexture("/res/player/up/playerUp1.png");
+        textures[4][1].loadTexture("/res/player/up/playerUp2.png");
+        textures[4][2].loadTexture("/res/player/up/playerUp3.png");
+        textures[4][3].loadTexture("/res/player/up/playerUp4.png");
+
+        textures[4][4].loadTexture("/res/player/down/playerDown1.png");
+        textures[4][5].loadTexture("/res/player/down/playerDown2.png");
+        textures[4][6].loadTexture("/res/player/down/playerDown3.png");
+        textures[4][7].loadTexture("/res/player/down/playerDown4.png");
+
+        textures[4][8].loadTexture("/res/player/left/playerLeft1.png");
+        textures[4][9].loadTexture("/res/player/left/playerLeft2.png");
+        textures[4][10].loadTexture("/res/player/left/playerLeft3.png");
+        textures[4][11].loadTexture("/res/player/left/playerLeft4.png");
+
+        textures[4][12].loadTexture("/res/player/right/playerRight1.png");
+        textures[4][13].loadTexture("/res/player/right/playerRight2.png");
+        textures[4][14].loadTexture("/res/player/right/playerRight3.png");
+        textures[4][15].loadTexture("/res/player/right/playerRight4.png");
+
     }
 
 

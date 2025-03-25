@@ -69,6 +69,7 @@ public class StructureSetter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        gp.collision.loadStructure(structure);
     }
 
     public Structure[] getStructure() {

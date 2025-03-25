@@ -15,8 +15,9 @@ public class BackGround {
     public Tiles[] tiles;
     private int scaleX, scaleY;
     //Доступ к главной панели
+    public static Layer[][] worldMap;
     GamePanel gp;
-//    Bridge bridge;
+
 
     public BackGround(GamePanel gp) {
         // Ensure gp is not null
@@ -24,6 +25,7 @@ public class BackGround {
             throw new IllegalArgumentException("GamePanel (gp) cannot be null");
         }
         this.gp = gp;
+        worldMap = new Layer[GamePanel.maxWorldRow][GamePanel.maxWorldCol];
 
         // Initialize the tiles array and each Tiles object
         tiles = new Tiles[221];
@@ -32,7 +34,7 @@ public class BackGround {
         }
         String mapPath = "/maps/NewWorld/BackGround/backGround.txt";
         setCollision();
-//        createMap(mapPath);
+        createMap(mapPath);
         loadMap(mapPath);
         loadTiles();
 
@@ -41,53 +43,52 @@ public class BackGround {
 
     }
     //TEMP
-//    public void createMap(String mapName) {
-//
-//
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(mapName))) {
-//
-//            for (int i = 0; i < GamePanel.maxWorldRow; i++) {
-//                for (int j = 0; j < GamePanel.maxWorldCol; j++) {
-//
-//                    String line = 1 + "_" + 1;
-//
-//                    if(i == 50 && j > 50) line = 1 + "_" + 11;
-//                    if(j == 50) line = 1 + "_" + 13;
-//                    if(i == 200) line = 1 + "_" + 10;
-//                    if(j == 200) line = 1 + "_" + 12;
-//                    if(j == 220) line = 1 + "_" + 13;
-//
-//                    if (j < 50) line = 1 + "_" + 9;
-//                    if(j > 200 && j < 220) line = 1 + "_" + 9;
-//                    if(i < 50) line = 1 + "_" + 9;
-//
-//                    if(i == 50 && j == 50) line = 1 + "_" + 9;
-//                    if(i == 50 && j == 200) line = 1 + "_" + 9;
-//                    if(i == 200 && j == 50) line = 1 + "_" + 9;
-//                    if(i == 200 && j == 200) line = 1 + "_" + 9;
-//
-//                    if(i == 50 && j == 220) line = 1 + "_" + 9;
-//                    if(i == 200 && j == 220) line = 1 + "_" + 9;
-//
-//                    if(i > 200) line = 1 + "_" + 9;
-//
-//
-//
-//                    writer.write(line);
-//                    // Добавляем пробел между элементами в строке (кроме последнего)
-//                    if (j < GamePanel.maxWorldCol - 1) {
-//                        writer.write(" ");
-//                    }
-//                }
-//                // Переходим на новую строку после каждой строки массива
-//                writer.newLine();
-//            }
-//
-//        } catch (IOException e) {
-//            System.out.println("Ошибка при записи в файл: " + e.getMessage());
-//        }
-//
-//    }
+    public void createMap(String mapName) {
+
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/maps/NewWorld/BackGround/backGround.txt"))) {
+
+            for (int i = 0; i < GamePanel.maxWorldRow; i++) {
+                for (int j = 0; j < GamePanel.maxWorldCol; j++) {
+
+                    String line = 1 + "_" + 1;
+                    if(i == 50 && j > 50) line = 1 + "_" + 11;
+                    if(j == 50) line = 1 + "_" + 13;
+                    if(i == 200) line = 1 + "_" + 10;
+                    if(j == 200) line = 1 + "_" + 12;
+                    if(j == 220) line = 1 + "_" + 13;
+
+                    if (j < 50) line = 1 + "_" + 9;
+                    if(j > 200 && j < 220) line = 1 + "_" + 9;
+                    if(i < 50) line = 1 + "_" + 9;
+
+                    if(i == 50 && j == 50) line = 1 + "_" + 9;
+                    if(i == 50 && j == 200) line = 1 + "_" + 9;
+                    if(i == 200 && j == 50) line = 1 + "_" + 9;
+                    if(i == 200 && j == 200) line = 1 + "_" + 9;
+
+                    if(i == 50 && j == 220) line = 1 + "_" + 9;
+                    if(i == 200 && j == 220) line = 1 + "_" + 9;
+
+                    if(i > 200) line = 1 + "_" + 9;
+
+
+
+                    writer.write(line);
+                    // Добавляем пробел между элементами в строке (кроме последнего)
+                    if (j < GamePanel.maxWorldCol - 1) {
+                        writer.write(" ");
+                    }
+                }
+                // Переходим на новую строку после каждой строки массива
+                writer.newLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Ошибка при записи в файл: " + e.getMessage());
+        }
+
+    }
 
 
     //////
@@ -131,7 +132,7 @@ public class BackGround {
     public void loadMap(String path) { // загружает мир из файла
         for (int i = 0; i < GamePanel.maxWorldRow; i++) {
             for (int j = 0; j < GamePanel.maxWorldCol; j++) {
-                GamePanel.worldMap[i][j] = new Layer();
+                worldMap[i][j] = new Layer();
             }
         }
 
@@ -155,7 +156,7 @@ public class BackGround {
 
                 while (col < GamePanel.maxWorldCol) {
                     String numbers[] = line.split(" ");
-                    GamePanel.worldMap[row][col].setLayers(numbers[col]);
+                    worldMap[row][col].setLayers(numbers[col]);
                     col++;
                 }
                 if (col == GamePanel.maxWorldCol) {
@@ -166,6 +167,7 @@ public class BackGround {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        gp.collision.loadMap(worldMap, GamePanel.maxWorldRow, GamePanel.maxWorldCol);
     }
 
     public void update() {
@@ -178,8 +180,8 @@ public class BackGround {
 
 
         while (worldCol < GamePanel.maxWorldCol && worldRow < GamePanel.maxWorldRow) {
-            int tileNum1 = GamePanel.worldMap[worldRow][worldCol].getLayer(1);
-            int tileNum2 = GamePanel.worldMap[worldRow][worldCol].getLayer(2);
+            int tileNum1 = worldMap[worldRow][worldCol].getLayer(1);
+            int tileNum2 = worldMap[worldRow][worldCol].getLayer(2);
 
             int worldX = worldCol * GamePanel.tileSize;
             int worldY = worldRow * GamePanel.tileSize;
@@ -191,12 +193,12 @@ public class BackGround {
                     worldY + GamePanel.tileSize > gp.player.worldY - gp.player.screenY &&
                     worldY - GamePanel.tileSize * 4 < gp.player.worldY + gp.player.screenY) {
                 try {
-                    if(GamePanel.worldMap[worldRow][worldCol].getLayer(1) != 0) {
+                    if(worldMap[worldRow][worldCol].getLayer(1) != 0) {
                         g.drawImage(tiles[tileNum1].image, screenX, screenY, GamePanel.tileSize, GamePanel.tileSize, null);
                     }
-                    if(GamePanel.worldMap[worldRow][worldCol].getLayer(2) != 0) {
+                    if(worldMap[worldRow][worldCol].getLayer(2) != 0) {
 
-                        if(GamePanel.worldMap[worldRow][worldCol].getLayer(2) == 99) {
+                        if(worldMap[worldRow][worldCol].getLayer(2) == 99) {
 //                            bridge.draw(g); ПРОДУМАТЬ КАК РИСОВАТЬ СТРУКТУРЫ И РАЗОБРАТЬСЯ В ОТРИСОВКИ МИРА ВСЕТАКИ
                         } else {
                             g.drawImage(tiles[tileNum2].image, screenX, screenY, GamePanel.tileSize, GamePanel.tileSize, null);

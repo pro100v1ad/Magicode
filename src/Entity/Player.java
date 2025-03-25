@@ -19,68 +19,73 @@ public class Player extends Entity{ // Класс игрока
     GamePanel gp;
 
     // Для работы с изображением
-    private BufferedImage imageMap;
     private BufferedImage image;
     private BufferedImage[] playerImage = new BufferedImage[16];
     private int spriteNum;
     private int spriteCount;
-    private int scaleX, scaleY;
 
     // Положение игрока в мире и направление взгляда
     public final int screenX;
     public final int screenY;
-    public String direction;
 
     public boolean checkCollisionUp = false;
     public boolean checkCollisionDown = false;
     public boolean checkCollisionRight = false;
     public boolean checkCollisionLeft = false;
 
-//    private Collision collision;
-    public ResourceLoader rs = new ResourceLoader();
-    private BackGround bg;
-
     public Player(GamePanel gp){
-        // Загрузка спрайтов
-        imageMap = rs.loadImage("/res/playerSkin.png");
-        scaleX = 1;
-        scaleY = 2;
+
+        // Для доступа к главной панели
+        this.gp = gp;
         setDefaultValues();
-        SpriteSheet spriteSheet = new SpriteSheet(imageMap, 4, 16); // Я пробовал загрузить анимированную ходьбу, надо доделать!!!
-        for (int i = 0; i < 4; i++) {
-            playerImage[i] = spriteSheet.getSprite(i, scaleX, scaleY);
-            playerImage[i+4] = spriteSheet.getSprite(i+36, scaleX, scaleY);
-            playerImage[i+8] = spriteSheet.getSprite(i+72, scaleX, scaleY);
-            playerImage[i+12] = spriteSheet.getSprite(i+108, scaleX, scaleY);
-        }
+        loadPlayerImages();
         image = playerImage[0];
         // Устанавливает позицию игрока на центр экрана
         screenX = GamePanel.WIDTH/2 - GamePanel.tileSize;
         screenY = GamePanel.HEIGHT/2 - GamePanel.tileSize*2;
-        direction = "null";
         // Для анимации
         spriteNum = 1;
         spriteCount = 0;
-        // Для коллизии
-        solidArea = new Rectangle();
-        solidArea.x = 4;
-        solidArea.y = 8;
-        solidArea.width = 16;
-        solidArea.height = 32;
-        // Для доступа к главной панели
-        this.gp = gp;
 
-//        collision = new Collision();
+        // Для коллизии
+        collisionWidth = GamePanel.tileSize*2;
+        collisionHeight = GamePanel.tileSize*3;
+        collisionCode = 2;
+    }
+
+    public void loadPlayerImages() {
+            playerImage[0] = gp.textureAtlas.textures[4][0].getTexture();
+            playerImage[1] = gp.textureAtlas.textures[4][1].getTexture();
+            playerImage[2] = gp.textureAtlas.textures[4][2].getTexture();
+            playerImage[3] = gp.textureAtlas.textures[4][3].getTexture();
+
+            playerImage[4] = gp.textureAtlas.textures[4][4].getTexture();
+            playerImage[5] = gp.textureAtlas.textures[4][5].getTexture();
+            playerImage[6] = gp.textureAtlas.textures[4][6].getTexture();
+            playerImage[7] = gp.textureAtlas.textures[4][7].getTexture();
+
+            playerImage[8] = gp.textureAtlas.textures[4][8].getTexture();
+            playerImage[9] = gp.textureAtlas.textures[4][9].getTexture();
+            playerImage[10] = gp.textureAtlas.textures[4][10].getTexture();
+            playerImage[11] = gp.textureAtlas.textures[4][11].getTexture();
+
+            playerImage[12] = gp.textureAtlas.textures[4][12].getTexture();
+            playerImage[13] = gp.textureAtlas.textures[4][13].getTexture();
+            playerImage[14] = gp.textureAtlas.textures[4][14].getTexture();
+            playerImage[15] = gp.textureAtlas.textures[4][15].getTexture();
     }
 
     public void setDefaultValues() {
+//        worldX = 10;
+//        worldY = 10;
+
         worldX = GamePanel.tileSize*120;
         worldY = GamePanel.tileSize*120;
 
         speed = (4*GamePanel.scale)/(GamePanel.UPDATE_RATE_Speed); // scale минимум 1/4 и максимум 2.
     }
 
-    public void update() { // Обрабатывает логику игрока.
+    public void update() {
         // Определяет направление движения все 8
         if (GamePanel.keys[0] && GamePanel.keys[3]) {
             direction = "up_right";
@@ -103,84 +108,70 @@ public class Player extends Entity{ // Класс игрока
         //Проверка коллизии
         if(direction.equals("up_right")) {
             for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
-                if(!checkCollisionUp) {
+                if(gp.collision.checkCollisionUp(this)) {
                     if(worldY > - 0) worldY -= 1;
                 }
-                if(!checkCollisionRight) {
+                if(gp.collision.checkCollisionRight(this)) {
                     if (worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
                 }
             }
         } else if(direction.equals("up_left")) {
             for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
-                if(!checkCollisionUp) {
+                if(gp.collision.checkCollisionUp(this)) {
                     if(worldY > - 0) worldY -= 1;
                 }
-                if(!checkCollisionLeft) {
+                if(gp.collision.checkCollisionLeft(this)) {
                     if(worldX > 1) worldX -= 1;
                 }
             }
         } else if(direction.equals("down_left")) {
             for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
-                if(!checkCollisionDown) {
+                if(gp.collision.checkCollisionDown(this)) {
                     if(worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
                 }
-                if(!checkCollisionLeft) {
+                if(gp.collision.checkCollisionLeft(this)) {
                     if(worldX > 1) worldX -= 1;
                 }
             }
         } else if(direction.equals("down_right")) {
             for(int i = 0; i < speed/sqrt(2); i++) {// Обработка движения вверх
-                if(!checkCollisionDown) {
+                if(gp.collision.checkCollisionDown(this)) {
                     if(worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
                 }
-                if(!checkCollisionRight) {
+                if(gp.collision.checkCollisionRight(this)) {
                     if(worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
                 }
             }
         } else if(direction.equals("up")) {
             for(int i = 0; i < speed/sqrt(2); i++) {
-                if(worldY > - 0 && !checkCollisionUp) worldY -= 1;
+                if(worldY > - 0 && gp.collision.checkCollisionUp(this)) worldY -= 1;
             }
         } else if(direction.equals("down")) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(!checkCollisionDown && worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
+            for(int i = 0; i < speed/sqrt(2); i++) if(gp.collision.checkCollisionDown(this) && worldY < GamePanel.maxWorldRow*GamePanel.tileSize-GamePanel.tileSize*4 - 1) worldY += 1;
         } else if(direction.equals("left")) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(worldX > 1 && !checkCollisionLeft) worldX -= 1;
+            for(int i = 0; i < speed/sqrt(2); i++) if(worldX > 1 && gp.collision.checkCollisionLeft(this)) worldX -= 1;
         } else if(direction.equals("right")) {
-            for(int i = 0; i < speed/sqrt(2); i++) if(!checkCollisionRight && worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
+            for(int i = 0; i < speed/sqrt(2); i++) if(gp.collision.checkCollisionRight(this) && worldX < GamePanel.maxWorldCol*GamePanel.tileSize-GamePanel.tileSize*2-1) worldX += 1;
         }
 
-        // Логика анимации
+        // Обновляем направление для анимации
         spriteCount++;
         if(spriteCount > 20*(GamePanel.UPDATE_RATE_Speed)) {
-            if(spriteNum == 0) {
-                spriteNum = 1;
-            }
-            else if(spriteNum == 1) {
-                spriteNum = 2;
-            }
-            else if(spriteNum == 2) {
-                spriteNum = 3;
-            }
-            else if(spriteNum == 3) {
-                spriteNum = 0;
-            }
+            spriteNum = (spriteNum + 1) % 4;
             spriteCount = 0;
         }
     }
+
 
     public void draw(Graphics2D g) { // Рисует игрока
 
 
         switch (direction) { // Анимирует движение по направлениям
-            case "up": image = playerImage[8 + spriteNum]; break;
-            case "down": image = playerImage[spriteNum]; break;
-            case "left": image = playerImage[12 + spriteNum]; break;
-            case "right": image = playerImage[4 + spriteNum]; break;
-            case "up_right": image = playerImage[4 + spriteNum]; break;
-            case "up_left": image = playerImage[12 + spriteNum]; break;
-            case "down_left": image = playerImage[12 + spriteNum]; break;
-            case "down_right": image = playerImage[4 + spriteNum]; break;
-            case "null": image = playerImage[0]; break;
+            case "up": image = playerImage[spriteNum]; break;
+            case "down": image = playerImage[4 + spriteNum]; break;
+            case "left", "up_left", "down_left": image = playerImage[8 + spriteNum]; break;
+            case "right", "up_right", "down_right": image = playerImage[12 + spriteNum]; break;
+            case "null": image = playerImage[4]; break;
         }
 
         g.drawImage(image, screenX, screenY, GamePanel.tileSize*2, GamePanel.tileSize*4, null);
