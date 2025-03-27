@@ -3,11 +3,10 @@ package display;
 import Entity.Player;
 import game.BackGround;
 import game.StructureSetter;
-import graphics.Layer;
 import graphics.TextureAtlas;
 import main.Main;
+import object.ObjectSetter;
 import object.SuperObject;
-import structure.Structure;
 import utils.*;
 
 import javax.swing.*;
@@ -61,13 +60,14 @@ public class GamePanel extends JComponent {
 
     // Объявление классов Необходимых в процессе разработки
     public Collision collision = new Collision(worldWidth, worldHeight, this);
+    public Interaction interaction = new Interaction(worldWidth, worldHeight, this);
 
     public TextureAtlas textureAtlas = new TextureAtlas(8, 16);
     public BackGround backGround = new BackGround(this);
-    public AssetSetter aSetter = new AssetSetter(this);
     public StructureSetter sSetter = new StructureSetter(this);
+    public ObjectSetter oSetter = new ObjectSetter(this);
     public Player player = new Player(this);
-    public SuperObject obj[] = new SuperObject[10];
+
 
 
 
@@ -88,8 +88,6 @@ public class GamePanel extends JComponent {
     }
 
     public void setupGame() {
-        aSetter.setObject();
-
         playMusic(0);
     }
 
@@ -216,6 +214,17 @@ public class GamePanel extends JComponent {
     }
 
     public void update2() {
+        collision.loadObject(oSetter.obj);
+
+        // В методе update() или обработке ввода
+        SuperObject interactObj = interaction.isPlayerInInteractionZone();
+        if(interactObj != null) {
+            System.out.println("Игрок может взаимодействовать с " + interactObj.getName() + interactObj.getInteractionCode());
+            // Обработка взаимодействия
+            if(keys[5]) {
+                oSetter.removeObject(interactObj);
+            }
+        }
 
         // Теперь здесь можно обрабатывать другие сущности
     }
@@ -226,12 +235,7 @@ public class GamePanel extends JComponent {
         backGround.draw(g);
 
         // Рисуем объекты
-        for(int i = 0; i < obj.length; i++) {
-            if(obj[i] != null) {
-                obj[i].draw(g, this);
-            }
-        }
-
+        oSetter.draw(g); // Разобраться почему не отображаются на экране!! и сделать коллизию
         sSetter.draw(g);
         player.draw(g);
 
@@ -239,6 +243,8 @@ public class GamePanel extends JComponent {
 //        collision.drawEntity(g);
 //        collision.drawTiles(g);
 //        collision.drawCollision(g);
+        interaction.drawInteractionZones(g);
+
         draw();
     }
 

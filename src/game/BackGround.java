@@ -3,7 +3,6 @@ package game;
 import Tile.Tiles;
 import display.GamePanel;
 import graphics.Layer;
-import structure.Bridge;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -3,6 +3,8 @@ package utils;
 import Entity.Entity;
 import display.GamePanel;
 import graphics.Layer;
+import object.OBJ_Book;
+import object.SuperObject;
 import structure.Bridge;
 import structure.Structure;
 
@@ -87,6 +89,54 @@ public class Collision {
 
                 }
             }
+        }
+
+    }
+
+    public void loadObject(SuperObject[] object) {
+
+        for(int i = 0; i < object.length; i++) {
+            if(object[i] != null) {
+
+                if(object[i].getName().equals("Book")) {
+                    OBJ_Book book = (OBJ_Book) object[i];
+                    int x = book.worldX;
+                    int y = book.worldY;
+                    int w = book.collisionWidth;
+                    int h = book.collisionHeight;
+
+                    for (int row = y; row < y + h; row++) {
+                        for(int col = x; col < x + w; col++) {
+                            collisionMap[row][col] = 1;
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+    public void clearObject(SuperObject object) {
+
+        if(object != null) {
+
+            if(object.getName().equals("Book")) {
+                OBJ_Book book = (OBJ_Book) object;
+                int x = book.worldX;
+                int y = book.worldY;
+                int w = book.collisionWidth;
+                int h = book.collisionHeight;
+
+                for (int row = y; row < y + h; row++) {
+                    for(int col = x; col < x + w; col++) {
+                        collisionMap[row][col] = 0;
+                    }
+                }
+
+            }
+
         }
 
     }

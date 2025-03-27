@@ -7,29 +7,45 @@ import java.awt.image.BufferedImage;
 
 public class SuperObject {
 
-    public BufferedImage image;
-    public String name;
-    public boolean collision = false;
+    private static int ID_COUNTER = 1;
+
+    protected BufferedImage image;
+    protected String name;
     public int worldX, worldY;
+    public int collisionWidth;
+    public int collisionHeight;
 
-    public void draw(Graphics2D g, GamePanel gp) {
+    protected int interactionCenterX;
+    protected int interactionCenterY;
+    protected int interactionRadius;
+    protected int interactionCode;
 
-        int screenX = (int) (worldX - gp.player.worldX + gp.player.screenX);
-        int screenY = (int) (worldY - gp.player.worldY + gp.player.screenY);
+    public SuperObject() {
+        this.interactionCode = ID_COUNTER++;
+    }
 
-        if(worldX + GamePanel.tileSize > gp.player.worldX - gp.player.screenX &&
-                worldX - GamePanel.tileSize*3 < gp.player.worldX + gp.player.screenX &&
-                worldY + GamePanel.tileSize > gp.player.worldY - gp.player.screenY &&
-                worldY - GamePanel.tileSize*4 < gp.player.worldY + gp.player.screenY)
-        {
-            try {
-                g.drawImage(image, screenX, screenY, GamePanel.tileSize*2, GamePanel.tileSize*2, null);
-
-            } catch (Exception e) {
-                System.out.println("SuperObject: Не удалось загрузить  на позицию " + screenX + " и " + screenY);
-            }
-        }
+    public String getName() {
+        return name;
 
     }
+
+    public int getInteractionCenterX() {
+        return interactionCenterX;
+    }
+
+    public int getInteractionCenterY() {
+        return interactionCenterY;
+    }
+
+
+    public int getInteractionRadius() {
+        return interactionRadius;
+    }
+
+    public int getInteractionCode() {
+        return interactionCode;
+    }
+
+    public void draw(Graphics2D g) {}
 
 }

@@ -4,6 +4,8 @@ import Entity.Player;
 import display.GamePanel;
 
 import java.awt.event.*;
+import java.security.Key;
+
 /*
 Класс для считывания нажатий мышки и клавиатуры
  */
@@ -73,6 +75,10 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
         if(key == KeyEvent.VK_SHIFT) {
             GamePanel.keys[4] = true;
         }
+        if(key == KeyEvent.VK_F) {
+            GamePanel.keys[5] = true;
+        }
+
 
     }
 
@@ -94,6 +100,9 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
         }
         if(key == KeyEvent.VK_SHIFT) {
             GamePanel.keys[4] = false;
+        }
+        if(key == KeyEvent.VK_F) {
+            GamePanel.keys[5] = false;
         }
 
     }

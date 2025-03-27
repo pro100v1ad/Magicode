@@ -3,10 +3,6 @@ package Entity;
 
 
 import display.GamePanel;
-import game.BackGround;
-import graphics.SpriteSheet;
-import utils.ResourceLoader;
-//import utils.Collision;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.sqrt;
