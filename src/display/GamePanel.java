@@ -4,6 +4,8 @@ import Entity.Player;
 import game.BackGround;
 import game.StructureSetter;
 import graphics.TextureAtlas;
+import gui.GUI_Player;
+import gui.MessageBox;
 import main.Main;
 import object.ObjectSetter;
 import object.SuperObject;
@@ -24,6 +26,9 @@ public class GamePanel extends JComponent {
     public static int isUpgrade = 1;
 
     public static boolean[] keys = new boolean[256]; // Содержит список состояния нажатия всех необходимых клавиш
+    public static boolean[] mouseButtons = new boolean[3]; // Для левой, средней и правой кнопок
+    public static boolean mouseClick = false;
+    public static int mouseX, mouseY; // У вас они уже есть
     public static int scroll = 0;
 
     public static final int MAS_HEIGHT = 45;
@@ -59,6 +64,8 @@ public class GamePanel extends JComponent {
 // Конец объявления классов необходимых для работы игры
 
     // Объявление классов Необходимых в процессе разработки
+    public Listeners listeners = new Listeners(this);
+
     public Collision collision = new Collision(worldWidth, worldHeight, this);
     public Interaction interaction = new Interaction(worldWidth, worldHeight, this);
 
@@ -68,8 +75,10 @@ public class GamePanel extends JComponent {
     public ObjectSetter oSetter = new ObjectSetter(this);
     public Player player = new Player(this);
 
-
-
+    
+    //GUI
+    public MessageBox messageBox = new MessageBox("Нажми на F, чтобы подобрать!");
+    public GUI_Player guiPlayer = new GUI_Player(this);
 
 // Конец объявления классов Необходимых в процессе разработки
 
@@ -81,14 +90,22 @@ public class GamePanel extends JComponent {
         setPreferredSize(new Dimension(WIDTH, HEIGHT)); // устанавливает размеры окна приложения
         setFocusable(true);
         requestFocus();
-        addKeyListener(new Listeners(this)); // Добавляет возможность считывать клавиши
-
+        addKeyListener(listeners); // Добавляет возможность считывать клавиши
+        addMouseListener(listeners);
+        addMouseMotionListener(listeners);
+        addMouseWheelListener(listeners);
 
 
     }
 
     public void setupGame() {
-        playMusic(0);
+        messageBox.setPosition(WIDTH/2, HEIGHT/3); // Устанавливаем позицию
+        messageBox.setVisible(false);
+//        playMusic(0);
+    }
+
+    public void checkClick() {
+        guiPlayer.setClickOnMenu(true);
     }
 
     public void run1() { // Тут вся логика FPS и UPS, в подробности лучше не вдаваться
@@ -215,15 +232,18 @@ public class GamePanel extends JComponent {
 
     public void update2() {
         collision.loadObject(oSetter.obj);
-
+        messageBox.update();
         // В методе update() или обработке ввода
         SuperObject interactObj = interaction.isPlayerInInteractionZone();
         if(interactObj != null) {
-            System.out.println("Игрок может взаимодействовать с " + interactObj.getName() + interactObj.getInteractionCode());
+//            System.out.println("Игрок может взаимодействовать с " + interactObj.getName() + interactObj.getInteractionCode());
+            messageBox.setVisible(true); // Делаем видимым
             // Обработка взаимодействия
             if(keys[5]) {
                 oSetter.removeObject(interactObj);
             }
+        } else {
+            messageBox.setVisible(false); // Делаем невидимым
         }
 
         // Теперь здесь можно обрабатывать другие сущности
@@ -243,8 +263,11 @@ public class GamePanel extends JComponent {
 //        collision.drawEntity(g);
 //        collision.drawTiles(g);
 //        collision.drawCollision(g);
-        interaction.drawInteractionZones(g);
+//        interaction.drawInteractionZones(g);
+        messageBox.draw(g);
 
+
+        guiPlayer.draw(g);
         draw();
     }
 

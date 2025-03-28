@@ -14,19 +14,49 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
     public Listeners(GamePanel gp) {
         this.gp = gp;
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
+        // e.getButton() возвращает номер кнопки:
+        // MouseEvent.BUTTON1 - левая кнопка
+        // MouseEvent.BUTTON2 - средняя кнопка (колесо)
+        // MouseEvent.BUTTON3 - правая кнопка
 
+        if (e.getButton() == MouseEvent.BUTTON1) {
+//            System.out.println("Левый клик на координатах: (" + e.getX() + ", " + e.getY() + ")");
+            gp.checkClick();
+            // Можно передать событие в GamePanel или Player
+
+        }
+
+//        if (e.getButton() == MouseEvent.BUTTON3) {
+//            System.out.println("Правый клик!");
+//        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        // Определяем какая кнопка была нажата
+        if (e.getButton() == MouseEvent.BUTTON1) { // Левая кнопка
+            GamePanel.mouseButtons[0] = true;
+        } else if (e.getButton() == MouseEvent.BUTTON2) { // Средняя кнопка
+            GamePanel.mouseButtons[1] = true;
+        } else if (e.getButton() == MouseEvent.BUTTON3) { // Правая кнопка
+            GamePanel.mouseButtons[2] = true;
+        }
 
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        // Определяем какая кнопка была отпущена
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            GamePanel.mouseButtons[0] = false;
+        } else if (e.getButton() == MouseEvent.BUTTON2) {
+            GamePanel.mouseButtons[1] = false;
+        } else if (e.getButton() == MouseEvent.BUTTON3) {
+            GamePanel.mouseButtons[2] = false;
+        }
     }
 
     @Override
@@ -41,14 +71,14 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
 
     @Override
     public void mouseDragged(MouseEvent e) {
-//        GamePanel.mouseX = e.getX();
-//        GamePanel.mouseY = e.getY();
+        GamePanel.mouseX = e.getX();
+        GamePanel.mouseY = e.getY();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-//        GamePanel.mouseX = e.getX();
-//        GamePanel.mouseY = e.getY();
+        GamePanel.mouseX = e.getX();
+        GamePanel.mouseY = e.getY();
     }
 
     @Override

@@ -67,6 +67,15 @@ public class TextureAtlas {
         textures[4][14].loadTexture("/res/player/right/playerRight3.png");
         textures[4][15].loadTexture("/res/player/right/playerRight4.png");
 
+        textures[5][0].loadTexture("/res/gui/GUI_player.png");
+        textures[5][1].loadTexture("/res/gui/player/healthBar.png");
+        textures[5][2].loadTexture("/res/gui/player/healthPart.png");
+        textures[5][3].loadTexture("/res/gui/player/healthPartEnd1.png");
+        textures[5][4].loadTexture("/res/gui/player/healthPartEnd2.png");
+
+        textures[6][0].loadTexture("/res/gui/menu/menuButtonPassive.png");
+        textures[6][1].loadTexture("/res/gui/menu/menuButtonActive.png");
+
     }
 
 

@@ -5,6 +5,8 @@ package Entity;
 import display.GamePanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import static java.lang.Math.max;
 import static java.lang.Math.sqrt;
 
 /*
@@ -19,6 +21,8 @@ public class Player extends Entity{ // Класс игрока
     private BufferedImage[] playerImage = new BufferedImage[16];
     private int spriteNum;
     private int spriteCount;
+
+    private int regCount;
 
     // Положение игрока в мире и направление взгляда
     public final int screenX;
@@ -42,7 +46,11 @@ public class Player extends Entity{ // Класс игрока
         // Для анимации
         spriteNum = 1;
         spriteCount = 0;
-
+        // Для хп
+        health = 50;
+        maxHealth = 100;
+        regeneration = 1;
+        regCount = 0;
         // Для коллизии
         collisionWidth = GamePanel.tileSize*2;
         collisionHeight = GamePanel.tileSize*3;
@@ -82,6 +90,18 @@ public class Player extends Entity{ // Класс игрока
     }
 
     public void update() {
+        // Для хп
+        if(health < maxHealth) {
+            regCount++;
+            if(regCount == 10) {
+                health += regeneration;
+                health = Math.min(health, maxHealth);
+                regCount = 0;
+
+            }
+        }
+
+
         // Определяет направление движения все 8
         if (GamePanel.keys[0] && GamePanel.keys[3]) {
             direction = "up_right";

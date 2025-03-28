@@ -9,6 +9,10 @@ public class Entity {
     public double speed;
     public String direction = "null";
 
+    public double maxHealth;
+    public double health;
+    public double regeneration;
+
     public int collisionX;
     public int collisionY;
     public int collisionWidth = GamePanel.tileSize;
