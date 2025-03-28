@@ -75,6 +75,11 @@ public class TextureAtlas {
 
         textures[6][0].loadTexture("/res/gui/menu/menuButtonPassive.png");
         textures[6][1].loadTexture("/res/gui/menu/menuButtonActive.png");
+        textures[6][2].loadTexture("/res/gui/menu/GUIMenu.png");
+        textures[6][3].loadTexture("/res/gui/menu/GUIMenuContinue.png");
+        textures[6][4].loadTexture("/res/gui/menu/GUIMenuSettings.png");
+        textures[6][5].loadTexture("/res/gui/menu/GUIMenuExit.png");
+        textures[6][6].loadTexture("/res/gui/menu/GUI_Menu.png");
 
     }
 

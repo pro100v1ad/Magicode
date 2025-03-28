@@ -1,6 +1,5 @@
 package gui;
 
-import Tile.Tiles;
 import display.GamePanel;
 
 import java.awt.*;
@@ -27,10 +26,12 @@ public class GUI_Player extends GUI{
     }
 
     public void draw(Graphics2D g) {
+        if(gp.state.equals(GamePanel.GameState.Game)) {
 //        g.drawImage(images[0], 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
-        int health = (int)(gp.player.health/gp.player.maxHealth*100);
-        drawGUIHealthBar(g, health);
-        drawButtonMenu(g);
+            int health = (int) (gp.player.health / gp.player.maxHealth * 100);
+            drawGUIHealthBar(g, health);
+            drawButtonMenu(g);
+        }
     }
 
     public void drawGUIHealthBar(Graphics2D g, int x) {
@@ -57,7 +58,6 @@ public class GUI_Player extends GUI{
 
         g.drawImage(images[5], GamePanel.tileSize, GamePanel.tileSize, GamePanel.tileSize * 4, GamePanel.tileSize * 4, null);
 
-
         if(GamePanel.mouseX > GamePanel.tileSize &&
             GamePanel.mouseY > GamePanel.tileSize &&
             GamePanel.mouseX < GamePanel.tileSize*5 &&
@@ -65,10 +65,13 @@ public class GUI_Player extends GUI{
             g.drawImage(images[6], GamePanel.tileSize, GamePanel.tileSize, GamePanel.tileSize * 4, GamePanel.tileSize * 4, null);
 
             if (clickOnMenu) { // логика при нажатии туда
-                clickOnMenu = false;
+                gp.state = GamePanel.GameState.GameMenu;
+                gp.guiMenu.setClickOnMenu(false);
             }
-
         }
+
+
+        clickOnMenu = false;
     }
 
     public void setClickOnMenu(boolean click) {

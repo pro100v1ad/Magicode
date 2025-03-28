@@ -6,6 +6,8 @@ public class GUI {
     protected int screenX;
     protected int screenY;
 
+    protected Font my_font;
+
 
 
 
