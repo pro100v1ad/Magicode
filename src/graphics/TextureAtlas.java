@@ -81,6 +81,9 @@ public class TextureAtlas {
         textures[6][5].loadTexture("/res/gui/menu/GUIMenuExit.png");
         textures[6][6].loadTexture("/res/gui/menu/GUI_Menu.png");
 
+        textures[7][0].loadTexture("/res/gui/Compiler/compiler.png");
+        textures[7][1].loadTexture("/res/gui/Compiler/compilerActive.png");
+
     }
 
 

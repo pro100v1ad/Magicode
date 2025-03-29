@@ -9,7 +9,7 @@ import java.io.InputStream;
 public class GUI_StartMenu extends GUI{
 
     private BufferedImage[] images;
-    private boolean clickOnMenu = false;
+
     private int isButton; // 1, 2, 3, 0
     private GamePanel gp;
 
@@ -110,9 +110,7 @@ public class GUI_StartMenu extends GUI{
         }
     }
 
-    public void setClickOnMenu(boolean click) {
-        this.clickOnMenu = click;
-    }
+
 
 
 }

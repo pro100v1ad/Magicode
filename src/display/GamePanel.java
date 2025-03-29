@@ -4,10 +4,7 @@ import Entity.Player;
 import game.BackGround;
 import game.StructureSetter;
 import graphics.TextureAtlas;
-import gui.GUI_Menu;
-import gui.GUI_Player;
-import gui.GUI_StartMenu;
-import gui.MessageBox;
+import gui.*;
 import main.Main;
 import object.ObjectSetter;
 import object.SuperObject;
@@ -31,7 +28,12 @@ public class GamePanel extends JComponent {
         Game,
         GameMenu;
     }
+    public enum CodeCompilerState {
+        Open,
+        Close;
+    }
     public GameState state = GameState.StartMenu;
+    public CodeCompilerState stateCompiler = CodeCompilerState.Close;
 
     public static boolean[] keys = new boolean[256]; // Содержит список состояния нажатия всех необходимых клавиш
     public static boolean[] mouseButtons = new boolean[3]; // Для левой, средней и правой кнопок
@@ -90,6 +92,8 @@ public class GamePanel extends JComponent {
     public GUI_Menu guiMenu = new GUI_Menu(this);
     public GUI_StartMenu guiStartMenu = new GUI_StartMenu(this);
 
+
+    public CodeCompiler codeCompiler = new CodeCompiler(this); // TEMP, потом будет создаваться при необходимости
 // Конец объявления классов Необходимых в процессе разработки
 
     public GamePanel() { // Конструктор (что-то делает)
@@ -111,13 +115,14 @@ public class GamePanel extends JComponent {
     public void setupGame() {
         messageBox.setPosition(WIDTH/2, HEIGHT/3); // Устанавливаем позицию
         messageBox.setVisible(false);
-//        playMusic(0);
+        playMusic(0);
     }
 
     public void checkClick() {
         guiPlayer.setClickOnMenu(true);
         guiMenu.setClickOnMenu(true);
         guiStartMenu.setClickOnMenu(true);
+        codeCompiler.setClickOnMenu(true);
     }
 
     public void run1() { // Тут вся логика FPS и UPS, в подробности лучше не вдаваться
@@ -266,19 +271,22 @@ public class GamePanel extends JComponent {
         } else if(state.equals(GameState.StartMenu)) {
             guiStartMenu.update();
         }
+
+        if(codeCompiler != null && stateCompiler == CodeCompilerState.Open) {
+            codeCompiler.update();
+        }
         // Теперь здесь можно обрабатывать другие сущности
     }
     public void render1(){
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
 
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, WIDTH, HEIGHT);
-
-            backGround.draw(g);
+        backGround.draw(g);
 
             // Рисуем объекты
-            oSetter.draw(g); // Разобраться почему не отображаются на экране!! и сделать коллизию
-            sSetter.draw(g);
-            player.draw(g);
+        oSetter.draw(g); // Разобраться почему не отображаются на экране!! и сделать коллизию
+        sSetter.draw(g);
+        player.draw(g);
 
             // Для отладки можно временно включить:
 //        collision.drawEntity(g);
@@ -286,10 +294,14 @@ public class GamePanel extends JComponent {
 //        collision.drawCollision(g);
 //        interaction.drawInteractionZones(g);
         // Рисование GUI
-            messageBox.draw(g);
-            guiPlayer.draw(g);
-            guiMenu.draw(g);
-            guiStartMenu.draw(g);
+        messageBox.draw(g);
+        guiPlayer.draw(g);
+        guiMenu.draw(g);
+        guiStartMenu.draw(g);
+
+        if(codeCompiler != null) {
+            codeCompiler.draw(g);
+        }
         draw();
     }
 

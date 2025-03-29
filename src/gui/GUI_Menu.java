@@ -9,7 +9,6 @@ import java.io.InputStream;
 public class GUI_Menu extends GUI{
 
     private BufferedImage[] images;
-    private boolean clickOnMenu = false;
     private int isButton; // 1, 2, 3, 0
     private int transparency;
     private GamePanel gp;
@@ -26,16 +25,6 @@ public class GUI_Menu extends GUI{
 
         isButton = 0;
         transparency = 0;
-
-        try {
-            InputStream is = getClass().getResourceAsStream("/res/font/my_font.ttf");
-            if (is != null) {
-                my_font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(36f); // Регистрируем и задаём размер
-            }
-        } catch (Exception e) {
-            System.err.println("Ошибка загрузки шрифта: " + e.getMessage());
-            my_font = new Font("Arial", Font.PLAIN, 24); // Шрифт по умолчанию
-        }
 
 
     }
@@ -124,8 +113,6 @@ public class GUI_Menu extends GUI{
         }
     }
 
-    public void setClickOnMenu(boolean click) {
-        this.clickOnMenu = click;
-    }
+
 
 }

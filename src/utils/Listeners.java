@@ -83,7 +83,9 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
 
     @Override
     public void keyTyped(KeyEvent e) {
-
+        if (gp.stateCompiler == GamePanel.CodeCompilerState.Open) {
+            gp.codeCompiler.handleCharTyped(e.getKeyChar());
+        }
     }
 
     @Override
@@ -109,6 +111,13 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
             GamePanel.keys[5] = true;
         }
 
+        if(key == KeyEvent.VK_F6) {
+            gp.stateCompiler = GamePanel.CodeCompilerState.Open; // TEMPPP
+        }
+
+        if (gp.stateCompiler == GamePanel.CodeCompilerState.Open) {
+            gp.codeCompiler.handleKeyPress(key);
+        }
 
     }
 
@@ -135,31 +144,16 @@ public class Listeners implements MouseListener, MouseMotionListener, KeyListene
             GamePanel.keys[5] = false;
         }
 
+
+        if(key == KeyEvent.VK_F5) {
+//            gp.stateCompiler = GamePanel.CodeCompilerState.Close; // TEMPPP
+        }
+
+
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent e) { // Считывание колесика мыши
-//        // Обработка прокрутки колесика мыши
-//        int notches = e.getWheelRotation();
-//        if (notches < 0) {
-//            if(GamePanel.scale < 1.5) {
-//                GamePanel.scale += 0.01;
-//                gp.player.worldX += 0.1;
-//                gp.player.worldY += 0.1;
-//            }
-////            System.out.println(GamePanel.scale);
-//            GamePanel.scroll = 2;
-//
-//            // Здесь можно добавить логику для обработки прокрутки вверх
-//        } else {
-//            if(GamePanel.scale > 0.75) {
-//                GamePanel.scale -= 0.01;
-//                gp.player.worldX -= 1;
-//                gp.player.worldY -= 1;
-//            }
-////            System.out.println(GamePanel.scale);
-//            GamePanel.scroll = 2;
-//            // Здесь можно добавить логику для обработки прокрутки вниз
-//        }
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        GamePanel.scroll = e.getWheelRotation(); // 1 вниз, -1 вверх
     }
 }
