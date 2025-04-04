@@ -5,6 +5,7 @@ import game.BackGround;
 import game.StructureSetter;
 import graphics.TextureAtlas;
 import gui.*;
+import gui.Code.CodeCompiler;
 import main.Main;
 import object.ObjectSetter;
 import object.SuperObject;
@@ -115,7 +116,7 @@ public class GamePanel extends JComponent {
     public void setupGame() {
         messageBox.setPosition(WIDTH/2, HEIGHT/3); // Устанавливаем позицию
         messageBox.setVisible(false);
-        playMusic(0);
+//        playMusic(0);
     }
 
     public void checkClick() {
